@@ -119,6 +119,8 @@ create table public.business_settings (
   upi_on_delivery_enabled   boolean not null default true,
   owner_can_edit_prices     boolean not null default false,
   default_low_stock_threshold numeric(12,3) not null default 5 check (default_low_stock_threshold >= 0),
+  hero_image_url            text check (hero_image_url is null or hero_image_url ~ '^https://'),
+  promo_image_url           text check (promo_image_url is null or promo_image_url ~ '^https://'),
   packing_slip_note         text not null default 'Thank you for shopping fresh with us!' check (char_length(packing_slip_note) <= 300),
   updated_at                timestamptz not null default now(),
   updated_by                uuid references auth.users (id) on delete set null

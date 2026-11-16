@@ -59,7 +59,7 @@ grant select on public.business_settings to anon, authenticated;
 grant update (business_name, tagline, address_line, city, state, pincode, phone, email, gstin,
               delivery_fee_paise, free_delivery_min_paise, min_order_paise, serviceable_pincodes,
               accepting_orders, cod_enabled, upi_on_delivery_enabled, owner_can_edit_prices,
-              default_low_stock_threshold, packing_slip_note, updated_by)
+              default_low_stock_threshold, packing_slip_note, hero_image_url, promo_image_url, updated_by)
   on public.business_settings to authenticated;
 
 create policy settings_read on public.business_settings for select to anon, authenticated using (true);
