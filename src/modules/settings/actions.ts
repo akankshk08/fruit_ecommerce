@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import { isAllowedImageUrl } from "@/lib/images";
 import { createClient } from "@/lib/supabase/server";
 import { fail, ok, type ActionResult } from "@/lib/action-result";
 import { friendlyDbError } from "@/lib/errors";
@@ -11,7 +12,7 @@ import { adminOrNull } from "@/modules/auth/session";
 
 const money = z.coerce.number().finite().min(0).max(100000);
 const flag = z.enum(["on"]).optional();
-const httpsUrl = z.union([z.literal(""), z.string().trim().url().startsWith("https://").max(500)]);
+const httpsUrl = z.union([z.literal(""), z.string().trim().max(500).refine(isAllowedImageUrl, "Please upload the photo here instead of pasting a link")]);
 
 const SettingsInput = z
   .object({
@@ -20,7 +21,15 @@ const SettingsInput = z
     addressLine: z.string().trim().max(300).default(""),
     city: z.string().trim().max(80).default(""),
     state: z.string().trim().max(80).default(""),
-    pincode: z.union([z.literal(""), z.string().trim().regex(/^[1-9]\d{5}$/, "Enter a valid pincode")]).default(""),
+    pincode: z
+      .union([
+        z.literal(""),
+        z
+          .string()
+          .trim()
+          .regex(/^[1-9]\d{5}$/, "Enter a valid pincode"),
+      ])
+      .default(""),
     phone: z.string().trim().max(20).default(""),
     email: z.union([z.literal(""), z.string().trim().email("Enter a valid email").max(200)]).default(""),
     gstin: z.string().trim().toUpperCase().max(20).default(""),

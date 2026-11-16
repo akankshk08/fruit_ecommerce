@@ -22,7 +22,10 @@ function revalidateCatalogue(slug?: string) {
 }
 
 /** Create (no productId) or update a product and its variants. */
-export async function saveProductAction(_prev: ActionResult<{ id: string }> | null, formData: FormData): Promise<ActionResult<{ id: string }>> {
+export async function saveProductAction(
+  _prev: ActionResult<{ id: string }> | null,
+  formData: FormData,
+): Promise<ActionResult<{ id: string }>> {
   if (!(await adminOrNull())) return fail(NO_PERMISSION);
   const parsed = parseForm(ProductInput, formData, PRODUCT_FIELDS);
   if (!parsed.success) return fail("Please check the highlighted fields.", parsed.fieldErrors);
@@ -59,10 +62,18 @@ export async function saveProductAction(_prev: ActionResult<{ id: string }> | nu
   if (productId?.success) {
     id = productId.data;
     const { error } = await supabase.from("products").update(row).eq("id", id);
-    if (error) return fail(error.code === "23505" ? "Another product already uses that link name." : friendlyDbError(error, "updateProduct"), error.code === "23505" ? { slug: ["Already in use"] } : undefined);
+    if (error)
+      return fail(
+        error.code === "23505" ? "Another product already uses that link name." : friendlyDbError(error, "updateProduct"),
+        error.code === "23505" ? { slug: ["Already in use"] } : undefined,
+      );
   } else {
     const { data, error } = await supabase.from("products").insert(row).select("id").single();
-    if (error) return fail(error.code === "23505" ? "Another product already uses that link name." : friendlyDbError(error, "createProduct"), error.code === "23505" ? { slug: ["Already in use"] } : undefined);
+    if (error)
+      return fail(
+        error.code === "23505" ? "Another product already uses that link name." : friendlyDbError(error, "createProduct"),
+        error.code === "23505" ? { slug: ["Already in use"] } : undefined,
+      );
     id = data.id;
   }
 
@@ -85,9 +96,10 @@ export async function saveProductAction(_prev: ActionResult<{ id: string }> | nu
       is_active: v.isActive,
       sort_order: i,
     };
-    const { error } = v.id && existing.some((e) => e.id === v.id)
-      ? await supabase.from("product_variants").update(vr).eq("id", v.id).eq("product_id", id)
-      : await supabase.from("product_variants").insert(vr);
+    const { error } =
+      v.id && existing.some((e) => e.id === v.id)
+        ? await supabase.from("product_variants").update(vr).eq("id", v.id).eq("product_id", id)
+        : await supabase.from("product_variants").insert(vr);
     if (error) return fail(error.code === "23505" ? "Each size needs a different label." : friendlyDbError(error, "saveVariant"));
   }
 

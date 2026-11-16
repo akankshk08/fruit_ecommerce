@@ -31,7 +31,10 @@ export default async function MyOrdersPage({ searchParams }: PageProps<"/orders"
         <ul className="mt-8 space-y-3">
           {orders.map((o) => (
             <li key={o.id}>
-              <Link href={`/orders/${o.id}`} className="flex items-center gap-4 rounded-[var(--radius-card)] border border-line bg-surface p-4 transition-shadow hover:shadow-[var(--shadow-lift)] sm:p-5">
+              <Link
+                href={`/orders/${o.id}`}
+                className="flex items-center gap-4 rounded-[var(--radius-card)] border border-line bg-surface p-4 transition-shadow hover:shadow-[var(--shadow-lift)] sm:p-5"
+              >
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="font-bold">Order {o.orderNumber}</span>
@@ -50,8 +53,16 @@ export default async function MyOrdersPage({ searchParams }: PageProps<"/orders"
       )}
       {pages > 1 && (
         <nav className="mt-8 flex justify-center gap-2" aria-label="Pages">
-          {page > 1 && <LinkButton variant="outline" size="sm" href={`/orders?page=${page - 1}`}>Newer</LinkButton>}
-          {page < pages && <LinkButton variant="outline" size="sm" href={`/orders?page=${page + 1}`}>Older</LinkButton>}
+          {page > 1 && (
+            <LinkButton variant="outline" size="sm" href={`/orders?page=${page - 1}`}>
+              Newer
+            </LinkButton>
+          )}
+          {page < pages && (
+            <LinkButton variant="outline" size="sm" href={`/orders?page=${page + 1}`}>
+              Older
+            </LinkButton>
+          )}
         </nav>
       )}
     </div>

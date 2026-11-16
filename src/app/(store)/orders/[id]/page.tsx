@@ -65,18 +65,25 @@ export default async function OrderPage({ params, searchParams }: PageProps<"/or
               {order.items.map((i) => (
                 <li key={i.id} className="flex items-center gap-4 px-5 py-4 sm:px-6">
                   <div className="relative size-14 shrink-0 overflow-hidden rounded-xl bg-beige">
-                    <ProductImage src={i.imageUrl} alt={i.productName} sizes="56px" />
+                    <ProductImage src={i.imageUrl} alt={i.productName} sizes="56px" showLabel={false} />
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="font-semibold">{i.productName}</p>
-                    <p className="text-sm text-muted-strong">{i.variantLabel} × {i.quantity} · {formatINR(i.unitPricePaise)} each</p>
+                    <p className="text-sm text-muted-strong">
+                      {i.variantLabel} × {i.quantity} · {formatINR(i.unitPricePaise)} each
+                    </p>
                   </div>
                   <p className="font-semibold tabular-nums">{formatINR(i.lineTotalPaise)}</p>
                 </li>
               ))}
             </ul>
             <div className="border-t border-line px-5 py-4 sm:px-6">
-              <OrderTotals subtotal={order.subtotalPaise} delivery={order.deliveryFeePaise} discount={order.discountPaise} total={order.totalPaise} />
+              <OrderTotals
+                subtotal={order.subtotalPaise}
+                delivery={order.deliveryFeePaise}
+                discount={order.discountPaise}
+                total={order.totalPaise}
+              />
             </div>
           </Card>
         </div>
@@ -97,7 +104,9 @@ export default async function OrderPage({ params, searchParams }: PageProps<"/or
           <Card className="p-5">
             <h2 className="text-sm font-bold tracking-wide text-muted-strong uppercase">Payment</h2>
             <p className="mt-2 font-semibold">{PAYMENT_METHOD_LABEL[order.paymentMethod]}</p>
-            <div className="mt-2"><PaymentBadge status={order.paymentStatus} /></div>
+            <div className="mt-2">
+              <PaymentBadge status={order.paymentStatus} />
+            </div>
           </Card>
         </div>
       </div>

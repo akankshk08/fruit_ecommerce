@@ -14,9 +14,15 @@ export default async function TermsPage() {
       <h2>Your account</h2>
       <p>Please give accurate details and keep your password private. You are responsible for orders placed from your account.</p>
       <h2>Products and prices</h2>
-      <p>Fresh produce varies naturally in size, colour and weight. Prices are in Indian Rupees and include applicable taxes. The price you pay is the price shown when you place your order.</p>
+      <p>
+        Fresh produce varies naturally in size, colour and weight. Prices are in Indian Rupees and include applicable taxes. The price you
+        pay is the price shown when you place your order.
+      </p>
       <h2>Orders and availability</h2>
-      <p>An order is accepted when we confirm it. If an item becomes unavailable we may cancel it and let you know. You can cancel an order online until we confirm it; after that, please call us.</p>
+      <p>
+        An order is accepted when we confirm it. If an item becomes unavailable we may cancel it and let you know. You can cancel an order
+        online until we confirm it; after that, please call us.
+      </p>
       <h2>Delivery</h2>
       <p>
         We deliver to the areas we serve.{" "}
@@ -30,13 +36,19 @@ export default async function TermsPage() {
       <h2>Quality and refunds</h2>
       <p>If anything arrives damaged or not fresh, tell us within 24 hours of delivery and we will replace it or refund that item.</p>
       <h2>Acceptable use</h2>
-      <p>Don&apos;t misuse the website, attempt to access other people&apos;s data or place fake orders. We may suspend accounts that do.</p>
+      <p>
+        Don&apos;t misuse the website, attempt to access other people&apos;s data or place fake orders. We may suspend accounts that do.
+      </p>
       <h2>Liability</h2>
       <p>To the extent allowed by law, our responsibility for any order is limited to the amount you paid for it.</p>
       <h2>Governing law</h2>
       <p>These terms are governed by the laws of India. [Add the city whose courts have jurisdiction.]</p>
       <h2>Contact</h2>
-      <p>{s.email || s.phone ? `Questions? Reach us at ${[s.phone, s.email].filter(Boolean).join(" or ")}.` : "Questions? Use the contact details on our website."}</p>
+      <p>
+        {s.email || s.phone
+          ? `Questions? Reach us at ${[s.phone, s.email].filter(Boolean).join(" or ")}.`
+          : "Questions? Use the contact details on our website."}
+      </p>
     </LegalPage>
   );
 }

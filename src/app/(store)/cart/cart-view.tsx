@@ -29,12 +29,21 @@ export function CartView() {
   if (loading) {
     return (
       <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_22rem]" aria-busy="true">
-        <div className="space-y-3">{Array.from({ length: 3 }, (_, i) => <Skeleton key={i} className="h-28" />)}</div>
+        <div className="space-y-3">
+          {Array.from({ length: 3 }, (_, i) => (
+            <Skeleton key={i} className="h-28" />
+          ))}
+        </div>
         <Skeleton className="h-64" />
       </div>
     );
   }
-  if (!result?.ok) return <Alert tone="error" className="mt-8">{result?.error ?? "Something went wrong."}</Alert>;
+  if (!result?.ok)
+    return (
+      <Alert tone="error" className="mt-8">
+        {result?.error ?? "Something went wrong."}
+      </Alert>
+    );
 
   const q = result.data;
   const unavailable = q.lines.filter((l) => !l.available);
@@ -48,25 +57,46 @@ export function CartView() {
         <ul className="divide-y divide-line">
           {q.lines.map((l) => (
             <li key={l.variantId} className="flex gap-4 p-4 sm:p-5">
-              <Link href={`/products/${l.productSlug}`} className="relative size-20 shrink-0 overflow-hidden rounded-xl bg-beige sm:size-24" tabIndex={-1} aria-hidden="true">
-                <ProductImage src={l.imageUrl} alt={l.productName} sizes="96px" />
+              <Link
+                href={`/products/${l.productSlug}`}
+                className="relative size-20 shrink-0 overflow-hidden rounded-xl bg-beige sm:size-24"
+                tabIndex={-1}
+                aria-hidden="true"
+              >
+                <ProductImage src={l.imageUrl} alt={l.productName} sizes="96px" showLabel={false} />
               </Link>
               <div className="flex min-w-0 flex-1 flex-col gap-2">
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
-                    <Link href={`/products/${l.productSlug}`} className="font-bold text-ink hover:text-primary">{l.productName}</Link>
-                    <p className="text-sm text-muted-strong">{l.variantLabel} · {formatINR(l.unitPricePaise)} each</p>
+                    <Link href={`/products/${l.productSlug}`} className="font-bold text-ink hover:text-primary">
+                      {l.productName}
+                    </Link>
+                    <p className="text-sm text-muted-strong">
+                      {l.variantLabel} · {formatINR(l.unitPricePaise)} each
+                    </p>
                   </div>
                   <p className="font-bold tabular-nums">{formatINR(l.lineTotalPaise)}</p>
                 </div>
                 {!l.available && (
                   <p className="text-sm font-medium text-danger">
-                    {l.maxQuantity === 0 ? "Sold out right now. Please remove it." : `Only ${l.maxQuantity} available. Please reduce the quantity.`}
+                    {l.maxQuantity === 0
+                      ? "Sold out right now. Please remove it."
+                      : `Only ${l.maxQuantity} available. Please reduce the quantity.`}
                   </p>
                 )}
                 <div className="mt-auto flex items-center justify-between">
-                  <QuantityStepper value={l.quantity} onChange={(n) => cart.setQuantity(l.variantId, n)} size="sm" label={`${l.productName} ${l.variantLabel}`} max={Math.max(l.maxQuantity, 1)} />
-                  <button type="button" onClick={() => cart.remove(l.variantId)} className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium text-muted-strong hover:bg-danger-soft hover:text-danger">
+                  <QuantityStepper
+                    value={l.quantity}
+                    onChange={(n) => cart.setQuantity(l.variantId, n)}
+                    size="sm"
+                    label={`${l.productName} ${l.variantLabel}`}
+                    max={Math.max(l.maxQuantity, 1)}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => cart.remove(l.variantId)}
+                    className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium text-muted-strong hover:bg-danger-soft hover:text-danger"
+                  >
                     <Trash2 className="size-4" aria-hidden="true" /> Remove
                   </button>
                 </div>
@@ -76,7 +106,10 @@ export function CartView() {
         </ul>
       </section>
 
-      <aside className="rounded-[var(--radius-card)] border border-line bg-surface p-5 sm:p-6 lg:sticky lg:top-28" aria-label="Order summary">
+      <aside
+        className="rounded-[var(--radius-card)] border border-line bg-surface p-5 sm:p-6 lg:sticky lg:top-28"
+        aria-label="Order summary"
+      >
         <h2 className="text-lg font-bold">Order summary</h2>
         {toFree > 0 && q.subtotalPaise > 0 && q.deliveryFeePaise > 0 && (
           <p className="mt-3 rounded-xl bg-beige px-3.5 py-2.5 text-sm text-forest">
@@ -97,7 +130,9 @@ export function CartView() {
               Continue to checkout
             </button>
           )}
-          <Link href="/shop" className="block text-center text-sm font-semibold text-primary hover:text-forest">Keep shopping</Link>
+          <Link href="/shop" className="block text-center text-sm font-semibold text-primary hover:text-forest">
+            Keep shopping
+          </Link>
         </div>
       </aside>
     </div>

@@ -7,7 +7,14 @@ import { Bell } from "lucide-react";
 import { useToast } from "@/components/ui/toast";
 import { formatDateTime } from "@/lib/utils";
 
-interface Item { id: string; type: string; title: string; body: string; orderId: string | null; createdAt: string }
+interface Item {
+  id: string;
+  type: string;
+  title: string;
+  body: string;
+  orderId: string | null;
+  createdAt: string;
+}
 
 /** Short two-note chime generated in the browser (no audio file needed). */
 function chime() {
@@ -50,7 +57,11 @@ export function NotificationBell() {
       if (fresh.length) {
         chime();
         const first = fresh[0];
-        toast(first.title + (first.body ? ` · ${first.body}` : ""), "info", first.orderId ? { label: "Open order", href: `/admin/orders/${first.orderId}` } : undefined);
+        toast(
+          first.title + (first.body ? ` · ${first.body}` : ""),
+          "info",
+          first.orderId ? { label: "Open order", href: `/admin/orders/${first.orderId}` } : undefined,
+        );
         router.refresh();
       }
     } catch {
@@ -76,7 +87,9 @@ export function NotificationBell() {
   }, [count]);
 
   const markAll = async () => {
-    await fetch("/api/admin/notifications", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" }).catch(() => null);
+    await fetch("/api/admin/notifications", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" }).catch(
+      () => null,
+    );
     setItems([]);
     setCount(0);
     setOpen(false);
@@ -104,7 +117,11 @@ export function NotificationBell() {
           <div className="absolute right-0 z-50 mt-2 w-[min(22rem,calc(100vw-2rem))] animate-slide-up overflow-hidden rounded-2xl border border-line bg-surface shadow-[var(--shadow-lift)]">
             <div className="flex items-center justify-between border-b border-line px-4 py-3">
               <p className="text-sm font-bold">Notifications</p>
-              {count > 0 && <button type="button" onClick={markAll} className="text-xs font-semibold text-primary hover:text-forest">Mark all read</button>}
+              {count > 0 && (
+                <button type="button" onClick={markAll} className="text-xs font-semibold text-primary hover:text-forest">
+                  Mark all read
+                </button>
+              )}
             </div>
             {items.length === 0 ? (
               <p className="px-4 py-8 text-center text-sm text-muted-strong">You&apos;re all caught up.</p>
@@ -112,7 +129,11 @@ export function NotificationBell() {
               <ul className="max-h-96 divide-y divide-line overflow-y-auto">
                 {items.map((n) => (
                   <li key={n.id}>
-                    <Link href={n.orderId ? `/admin/orders/${n.orderId}` : "/admin/orders"} onClick={() => setOpen(false)} className="block px-4 py-3 hover:bg-canvas">
+                    <Link
+                      href={n.orderId ? `/admin/orders/${n.orderId}` : "/admin/orders"}
+                      onClick={() => setOpen(false)}
+                      className="block px-4 py-3 hover:bg-canvas"
+                    >
                       <p className="text-sm font-semibold">{n.title}</p>
                       {n.body && <p className="text-sm text-muted-strong">{n.body}</p>}
                       <p className="mt-0.5 text-xs text-muted">{formatDateTime(n.createdAt)}</p>

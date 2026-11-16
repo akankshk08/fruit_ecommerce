@@ -15,7 +15,11 @@ export default async function ResetPasswordPage() {
         <ResetPasswordForm />
       ) : (
         <Alert tone="error">
-          This reset link has expired or was already used. <Link href="/forgot-password" className="underline">Request a new one</Link>.
+          This reset link has expired or was already used.{" "}
+          <Link href="/forgot-password" className="underline">
+            Request a new one
+          </Link>
+          .
         </Alert>
       )}
     </AuthCard>

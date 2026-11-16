@@ -23,11 +23,7 @@ export const getCurrentUser = cache(async (): Promise<CurrentUser | null> => {
   const { data, error } = await supabase.auth.getClaims();
   const sub = data?.claims?.sub;
   if (error || !sub) return null;
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("id, email, full_name, phone, role")
-    .eq("id", sub)
-    .maybeSingle();
+  const { data: profile } = await supabase.from("profiles").select("id, email, full_name, phone, role").eq("id", sub).maybeSingle();
   if (!profile) return null;
   return {
     id: profile.id,

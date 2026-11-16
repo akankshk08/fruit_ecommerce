@@ -42,25 +42,49 @@ export function FieldShell({ label, hint, errors, optional, className, children 
   );
 }
 
-type InputProps = ComponentProps<"input"> & { label: string; hint?: ReactNode; errors?: string[]; optional?: boolean; wrapperClassName?: string };
+type InputProps = ComponentProps<"input"> & {
+  label: string;
+  hint?: ReactNode;
+  errors?: string[];
+  optional?: boolean;
+  wrapperClassName?: string;
+};
 
 export function Input({ label, hint, errors, optional, wrapperClassName, className, ...rest }: InputProps) {
   return (
     <FieldShell label={label} hint={hint} errors={errors} optional={optional} className={wrapperClassName}>
       {(id, describedBy, invalid) => (
-        <input id={id} aria-describedby={describedBy} aria-invalid={invalid || undefined} className={cn(control, "h-11", className)} {...rest} />
+        <input
+          id={id}
+          aria-describedby={describedBy}
+          aria-invalid={invalid || undefined}
+          className={cn(control, "h-11", className)}
+          {...rest}
+        />
       )}
     </FieldShell>
   );
 }
 
-type TextareaProps = ComponentProps<"textarea"> & { label: string; hint?: ReactNode; errors?: string[]; optional?: boolean; wrapperClassName?: string };
+type TextareaProps = ComponentProps<"textarea"> & {
+  label: string;
+  hint?: ReactNode;
+  errors?: string[];
+  optional?: boolean;
+  wrapperClassName?: string;
+};
 
 export function Textarea({ label, hint, errors, optional, wrapperClassName, className, ...rest }: TextareaProps) {
   return (
     <FieldShell label={label} hint={hint} errors={errors} optional={optional} className={wrapperClassName}>
       {(id, describedBy, invalid) => (
-        <textarea id={id} aria-describedby={describedBy} aria-invalid={invalid || undefined} className={cn(control, "min-h-24 py-2.5", className)} {...rest} />
+        <textarea
+          id={id}
+          aria-describedby={describedBy}
+          aria-invalid={invalid || undefined}
+          className={cn(control, "min-h-24 py-2.5", className)}
+          {...rest}
+        />
       )}
     </FieldShell>
   );
@@ -72,7 +96,13 @@ export function Select({ label, hint, errors, wrapperClassName, className, child
   return (
     <FieldShell label={label} hint={hint} errors={errors} className={wrapperClassName}>
       {(id, describedBy, invalid) => (
-        <select id={id} aria-describedby={describedBy} aria-invalid={invalid || undefined} className={cn(control, "h-11 pr-8", className)} {...rest}>
+        <select
+          id={id}
+          aria-describedby={describedBy}
+          aria-invalid={invalid || undefined}
+          className={cn(control, "h-11 pr-8", className)}
+          {...rest}
+        >
           {children}
         </select>
       )}
@@ -80,7 +110,12 @@ export function Select({ label, hint, errors, wrapperClassName, className, child
   );
 }
 
-export function Checkbox({ label, description, className, ...rest }: ComponentProps<"input"> & { label: ReactNode; description?: ReactNode }) {
+export function Checkbox({
+  label,
+  description,
+  className,
+  ...rest
+}: ComponentProps<"input"> & { label: ReactNode; description?: ReactNode }) {
   return (
     <label className={cn("flex cursor-pointer items-start gap-3 text-sm", className)}>
       <input type="checkbox" className="mt-0.5 size-[1.125rem] shrink-0 cursor-pointer rounded accent-primary" {...rest} />

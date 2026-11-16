@@ -9,6 +9,7 @@ import { listActiveCategories } from "@/modules/categories/repo";
 import { getBusinessSettings } from "@/modules/settings/repo";
 import { formatINR } from "@/lib/money";
 import { Alert } from "@/components/ui/alert";
+import { isAllowedImageUrl } from "@/lib/images";
 
 export default async function HomePage({ searchParams }: PageProps<"/">) {
   const sp = await searchParams;
@@ -30,9 +31,16 @@ export default async function HomePage({ searchParams }: PageProps<"/">) {
       {/* Hero */}
       <section className="mx-auto max-w-7xl px-4 pt-6 sm:px-6 sm:pt-8 lg:px-8">
         <div className="relative isolate overflow-hidden rounded-[1.75rem] bg-forest">
-          {settings.heroImageUrl ? (
+          {isAllowedImageUrl(settings.heroImageUrl) ? (
             <>
-              <Image src={settings.heroImageUrl} alt="" fill priority sizes="(max-width: 1280px) 100vw, 1280px" className="-z-10 object-cover" />
+              <Image
+                src={settings.heroImageUrl!}
+                alt=""
+                fill
+                priority
+                sizes="(max-width: 1280px) 100vw, 1280px"
+                className="-z-10 object-cover"
+              />
               <div className="absolute inset-0 -z-10 bg-gradient-to-r from-forest/90 via-forest/60 to-forest/10" />
             </>
           ) : (
@@ -55,7 +63,12 @@ export default async function HomePage({ searchParams }: PageProps<"/">) {
                 Shop fresh produce <ArrowRight className="size-4" aria-hidden="true" />
               </LinkButton>
               {categories[0] && (
-                <LinkButton href={`/shop?category=${categories[0].slug}`} size="lg" variant="ghost" className="text-white ring-1 ring-white/30 hover:bg-white/10 hover:text-white">
+                <LinkButton
+                  href={`/shop?category=${categories[0].slug}`}
+                  size="lg"
+                  variant="ghost"
+                  className="text-white ring-1 ring-white/30 hover:bg-white/10 hover:text-white"
+                >
                   Browse {categories[0].name.toLowerCase()}
                 </LinkButton>
               )}
@@ -68,7 +81,11 @@ export default async function HomePage({ searchParams }: PageProps<"/">) {
       <section aria-label="Why shop with us" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <ul className="grid gap-px overflow-hidden rounded-b-[1.25rem] border-x border-b border-line bg-line sm:grid-cols-3">
           {[
-            { Icon: Truck, title: settings.freeDeliveryMinPaise ? `Free delivery over ${formatINR(settings.freeDeliveryMinPaise)}` : "Free delivery", text: "Same-day, carefully packed" },
+            {
+              Icon: Truck,
+              title: settings.freeDeliveryMinPaise ? `Free delivery over ${formatINR(settings.freeDeliveryMinPaise)}` : "Free delivery",
+              text: "Same-day, carefully packed",
+            },
             { Icon: ShieldCheck, title: "Quality promise", text: "Not happy? We'll replace it" },
             { Icon: Wallet, title: "Pay on delivery", text: "Cash or UPI at your door" },
           ].map(({ Icon, title, text }) => (
@@ -91,8 +108,18 @@ export default async function HomePage({ searchParams }: PageProps<"/">) {
           <SectionHeading id="cat-heading" eyebrow="Shop by category" title="Something fresh for every meal" href="/shop" />
           <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
             {categories.slice(0, 8).map((c) => (
-              <Link key={c.id} href={`/shop?category=${c.slug}`} className="group relative block aspect-[4/5] overflow-hidden rounded-[var(--radius-card)] bg-beige sm:aspect-[5/6]">
-                <ProductImage src={c.imageUrl} alt={c.name} sizes="(max-width: 1024px) 50vw, 25vw" className="transition-transform duration-500 group-hover:scale-[1.05]" />
+              <Link
+                key={c.id}
+                href={`/shop?category=${c.slug}`}
+                className="group relative block aspect-[4/5] overflow-hidden rounded-[var(--radius-card)] bg-beige sm:aspect-[5/6]"
+              >
+                <ProductImage
+                  src={c.imageUrl}
+                  alt={c.name}
+                  sizes="(max-width: 1024px) 50vw, 25vw"
+                  showLabel={false}
+                  className="transition-transform duration-500 group-hover:scale-[1.05]"
+                />
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-forest/85 via-forest/40 to-transparent p-4 pt-16 sm:p-5">
                   <h3 className="text-lg font-bold text-white sm:text-xl">{c.name}</h3>
                   <span className="mt-1 inline-flex items-center gap-1 text-sm font-medium text-white/85 group-hover:text-white">
@@ -124,7 +151,9 @@ export default async function HomePage({ searchParams }: PageProps<"/">) {
         <div className="relative isolate grid overflow-hidden rounded-[1.75rem] bg-beige md:grid-cols-2">
           <div className="px-6 py-12 sm:px-12 sm:py-16">
             <p className="text-xs font-bold tracking-wider text-primary uppercase">Weekly basket</p>
-            <h2 className="mt-3 text-3xl leading-tight font-extrabold tracking-tight text-forest sm:text-4xl">Stock up on the season&apos;s best.</h2>
+            <h2 className="mt-3 text-3xl leading-tight font-extrabold tracking-tight text-forest sm:text-4xl">
+              Stock up on the season&apos;s best.
+            </h2>
             <p className="mt-4 max-w-md text-muted-strong">
               Fill your basket with what&apos;s at its peak right now.
               {settings.freeDeliveryMinPaise > 0 && ` Orders above ${formatINR(settings.freeDeliveryMinPaise)} ship free.`}
@@ -134,8 +163,8 @@ export default async function HomePage({ searchParams }: PageProps<"/">) {
             </LinkButton>
           </div>
           <div className="relative min-h-60 md:min-h-full">
-            {settings.promoImageUrl ? (
-              <Image src={settings.promoImageUrl} alt="" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
+            {isAllowedImageUrl(settings.promoImageUrl) ? (
+              <Image src={settings.promoImageUrl!} alt="" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
             ) : (
               <div className="absolute inset-0 bg-beige-deep">
                 <HeroArt subtle />
@@ -153,7 +182,9 @@ function SectionHeading({ id, eyebrow, title, href }: { id: string; eyebrow: str
     <div className="flex items-end justify-between gap-4">
       <div>
         <p className="text-xs font-bold tracking-wider text-primary uppercase">{eyebrow}</p>
-        <h2 id={id} className="mt-2 text-2xl font-extrabold tracking-tight text-ink sm:text-[2rem]">{title}</h2>
+        <h2 id={id} className="mt-2 text-2xl font-extrabold tracking-tight text-ink sm:text-[2rem]">
+          {title}
+        </h2>
       </div>
       <Link href={href} className="hidden shrink-0 items-center gap-1 text-sm font-semibold text-primary hover:text-forest sm:inline-flex">
         View all <ArrowRight className="size-4" aria-hidden="true" />
@@ -166,8 +197,13 @@ function SectionHeading({ id, eyebrow, title, href }: { id: string; eyebrow: str
 function HeroArt({ subtle }: { subtle?: boolean }) {
   const stroke = subtle ? "#164A32" : "#F3EEDC";
   return (
-    <svg className="absolute inset-0 -z-10 h-full w-full" viewBox="0 0 800 520" preserveAspectRatio="xMaxYMid slice" aria-hidden="true">
-      <g fill="none" stroke={stroke} strokeOpacity={subtle ? 0.18 : 0.14} strokeWidth="1.5">
+    <svg
+      className="absolute inset-0 -z-10 h-full w-full"
+      viewBox="0 0 800 520"
+      preserveAspectRatio={subtle ? "xMidYMid slice" : "xMaxYMid slice"}
+      aria-hidden="true"
+    >
+      <g fill="none" stroke={stroke} strokeOpacity={subtle ? 0.35 : 0.14} strokeWidth={subtle ? 2 : 1.5}>
         <circle cx="640" cy="260" r="210" />
         <circle cx="640" cy="260" r="150" />
         <path d="M640 70c80 60 110 140 0 380C530 210 560 130 640 70Z" />

@@ -3,7 +3,11 @@ import { STATUS_LABEL, STATUS_TONE, type OrderStatus } from "@/modules/orders/st
 import { PAYMENT_STATUS_LABEL, type PaymentStatus } from "@/modules/payments/methods";
 
 export function StatusBadge({ status }: { status: OrderStatus }) {
-  return <Badge tone={STATUS_TONE[status]} dot>{STATUS_LABEL[status]}</Badge>;
+  return (
+    <Badge tone={STATUS_TONE[status]} dot>
+      {STATUS_LABEL[status]}
+    </Badge>
+  );
 }
 
 export function PaymentBadge({ status }: { status: PaymentStatus }) {

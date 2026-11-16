@@ -14,4 +14,15 @@ export const AddressInput = z
   })
   .strict();
 
-export const ADDRESS_FIELDS = ["label", "fullName", "phone", "line1", "line2", "landmark", "city", "state", "pincode", "isDefault"] as const;
+export const ADDRESS_FIELDS = [
+  "label",
+  "fullName",
+  "phone",
+  "line1",
+  "line2",
+  "landmark",
+  "city",
+  "state",
+  "pincode",
+  "isDefault",
+] as const;

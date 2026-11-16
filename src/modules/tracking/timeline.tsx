@@ -33,7 +33,10 @@ export function TrackingTimeline({ status, history }: { status: OrderStatus; his
         return (
           <li key={s} className="relative flex gap-4 pb-7 last:pb-0">
             {i < ORDER_FLOW.length - 1 && (
-              <span className={cn("absolute top-8 left-[0.9375rem] h-[calc(100%-2rem)] w-0.5", i < currentIdx ? "bg-primary" : "bg-line")} aria-hidden="true" />
+              <span
+                className={cn("absolute top-8 left-[0.9375rem] h-[calc(100%-2rem)] w-0.5", i < currentIdx ? "bg-primary" : "bg-line")}
+                aria-hidden="true"
+              />
             )}
             <span
               className={cn(

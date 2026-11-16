@@ -29,8 +29,12 @@ export async function placeOrderAction(
   }
 
   const address = {
-    line1: input.line1, line2: input.line2, landmark: input.landmark,
-    city: input.city, state: input.state, pincode: input.pincode,
+    line1: input.line1,
+    line2: input.line2,
+    landmark: input.landmark,
+    city: input.city,
+    state: input.state,
+    pincode: input.pincode,
   };
   const supabase = await createClient();
   const { data: orderId, error } = await supabase.rpc("place_order", {
@@ -47,7 +51,12 @@ export async function placeOrderAction(
     const { count } = await supabase.from("addresses").select("id", { count: "exact", head: true }).eq("user_id", user.id);
     if ((count ?? 0) < 10) {
       await supabase.from("addresses").insert({
-        user_id: user.id, label: "Home", full_name: input.name, phone: input.phone, ...address, is_default: (count ?? 0) === 0,
+        user_id: user.id,
+        label: "Home",
+        full_name: input.name,
+        phone: input.phone,
+        ...address,
+        is_default: (count ?? 0) === 0,
       });
     }
   }

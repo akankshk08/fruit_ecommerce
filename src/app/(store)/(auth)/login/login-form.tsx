@@ -16,10 +16,14 @@ export function LoginForm({ next }: { next: string }) {
       <Input label="Email" name="email" type="email" autoComplete="email" required errors={fe?.email} />
       <Input label="Password" name="password" type="password" autoComplete="current-password" required errors={fe?.password} />
       <div className="text-right">
-        <Link href="/forgot-password" className="text-sm font-semibold text-primary hover:text-forest">Forgot password?</Link>
+        <Link href="/forgot-password" className="text-sm font-semibold text-primary hover:text-forest">
+          Forgot password?
+        </Link>
       </div>
       <FormMessage state={state} />
-      <SubmitButton className="w-full" size="lg" pendingText="Logging in…">Log in</SubmitButton>
+      <SubmitButton className="w-full" size="lg" pendingText="Logging in…">
+        Log in
+      </SubmitButton>
     </form>
   );
 }

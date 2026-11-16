@@ -35,9 +35,25 @@ interface ButtonProps extends ComponentProps<"button"> {
   icon?: ReactNode;
 }
 
-export function Button({ variant = "primary", size = "md", loading, icon, className, children, disabled, type = "button", ...rest }: ButtonProps) {
+export function Button({
+  variant = "primary",
+  size = "md",
+  loading,
+  icon,
+  className,
+  children,
+  disabled,
+  type = "button",
+  ...rest
+}: ButtonProps) {
   return (
-    <button type={type} className={buttonClass(variant, size, className)} disabled={disabled || loading} aria-busy={loading || undefined} {...rest}>
+    <button
+      type={type}
+      className={buttonClass(variant, size, className)}
+      disabled={disabled || loading}
+      aria-busy={loading || undefined}
+      {...rest}
+    >
       {loading ? <Spinner className="size-4" /> : icon}
       {children}
     </button>

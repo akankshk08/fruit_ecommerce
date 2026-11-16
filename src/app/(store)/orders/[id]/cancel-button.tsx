@@ -14,7 +14,9 @@ export function CancelOrderButton({ orderId }: { orderId: string }) {
   const router = useRouter();
   return (
     <div className="mt-6 border-t border-line pt-5">
-      <Button variant="outline" size="sm" onClick={() => setOpen(true)}>Cancel order</Button>
+      <Button variant="outline" size="sm" onClick={() => setOpen(true)}>
+        Cancel order
+      </Button>
       <ConfirmDialog
         open={open}
         title="Cancel this order?"

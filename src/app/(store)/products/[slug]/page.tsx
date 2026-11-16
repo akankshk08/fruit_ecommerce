@@ -33,15 +33,21 @@ export default async function ProductPage({ params }: PageProps<"/products/[slug
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <nav aria-label="Breadcrumb" className="flex items-center gap-1 text-sm text-muted-strong">
-        <Link href="/shop" className="hover:text-primary">Shop</Link>
+        <Link href="/shop" className="hover:text-primary">
+          Shop
+        </Link>
         {product.category && (
           <>
             <ChevronRight className="size-3.5" aria-hidden="true" />
-            <Link href={`/shop?category=${product.category.slug}`} className="hover:text-primary">{product.category.name}</Link>
+            <Link href={`/shop?category=${product.category.slug}`} className="hover:text-primary">
+              {product.category.name}
+            </Link>
           </>
         )}
         <ChevronRight className="size-3.5" aria-hidden="true" />
-        <span className="truncate text-ink" aria-current="page">{product.name}</span>
+        <span className="truncate text-ink" aria-current="page">
+          {product.name}
+        </span>
       </nav>
 
       <div className="mt-6 grid gap-8 lg:grid-cols-2 lg:gap-14">
@@ -53,9 +59,19 @@ export default async function ProductPage({ params }: PageProps<"/products/[slug
           <h1 className="mt-2 text-3xl font-extrabold tracking-tight sm:text-[2.5rem] sm:leading-tight">{product.name}</h1>
           <div className="mt-3 flex flex-wrap items-center gap-2">
             {product.isAvailable ? (
-              product.lowStock ? <Badge tone="warning" dot>Only a few left</Badge> : <Badge tone="success" dot>In stock</Badge>
+              product.lowStock ? (
+                <Badge tone="warning" dot>
+                  Only a few left
+                </Badge>
+              ) : (
+                <Badge tone="success" dot>
+                  In stock
+                </Badge>
+              )
             ) : (
-              <Badge tone="neutral" dot>Sold out for today</Badge>
+              <Badge tone="neutral" dot>
+                Sold out for today
+              </Badge>
             )}
             {product.origin && (
               <span className="inline-flex items-center gap-1 text-sm text-muted-strong">
@@ -83,7 +99,9 @@ export default async function ProductPage({ params }: PageProps<"/products/[slug
 
       {others.length > 0 && (
         <section className="mt-20" aria-labelledby="related">
-          <h2 id="related" className="text-2xl font-extrabold tracking-tight">You may also like</h2>
+          <h2 id="related" className="text-2xl font-extrabold tracking-tight">
+            You may also like
+          </h2>
           <div className="mt-6">
             <ProductGrid products={others} />
           </div>

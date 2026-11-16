@@ -5,7 +5,12 @@ import { AlertCircle, CheckCircle2, Bell, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type ToastTone = "success" | "error" | "info";
-interface Toast { id: number; tone: ToastTone; message: string; action?: { label: string; href: string } }
+interface Toast {
+  id: number;
+  tone: ToastTone;
+  message: string;
+  action?: { label: string; href: string };
+}
 
 const ToastContext = createContext<{ toast: (message: string, tone?: ToastTone, action?: Toast["action"]) => void } | null>(null);
 
@@ -24,7 +29,10 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   return (
     <ToastContext value={value}>
       {children}
-      <div className="pointer-events-none fixed inset-x-0 bottom-4 z-[100] flex flex-col items-center gap-2 px-4 sm:inset-x-auto sm:right-5 sm:bottom-5 sm:items-end" aria-live="polite">
+      <div
+        className="pointer-events-none fixed inset-x-0 bottom-4 z-[100] flex flex-col items-center gap-2 px-4 sm:inset-x-auto sm:right-5 sm:bottom-5 sm:items-end"
+        aria-live="polite"
+      >
         {toasts.map((t) => {
           const Icon = t.tone === "error" ? AlertCircle : t.tone === "info" ? Bell : CheckCircle2;
           return (
@@ -36,7 +44,10 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                 t.tone === "error" ? "border-danger/20" : "border-line",
               )}
             >
-              <Icon className={cn("mt-0.5 size-[1.125rem] shrink-0", t.tone === "error" ? "text-danger" : "text-primary")} aria-hidden="true" />
+              <Icon
+                className={cn("mt-0.5 size-[1.125rem] shrink-0", t.tone === "error" ? "text-danger" : "text-primary")}
+                aria-hidden="true"
+              />
               <div className="flex-1">
                 <p className="font-medium text-ink">{t.message}</p>
                 {t.action && (
@@ -45,7 +56,12 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                   </a>
                 )}
               </div>
-              <button type="button" onClick={() => dismiss(t.id)} className="rounded-full p-0.5 text-muted hover:bg-canvas hover:text-ink" aria-label="Dismiss">
+              <button
+                type="button"
+                onClick={() => dismiss(t.id)}
+                className="rounded-full p-0.5 text-muted hover:bg-canvas hover:text-ink"
+                aria-label="Dismiss"
+              >
                 <X className="size-4" />
               </button>
             </div>

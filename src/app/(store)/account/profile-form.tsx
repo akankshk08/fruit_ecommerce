@@ -12,7 +12,16 @@ export function ProfileForm({ fullName, phone }: { fullName: string; phone: stri
   return (
     <form action={action} className="grid gap-4 sm:grid-cols-2" noValidate>
       <Input label="Full name" name="fullName" defaultValue={fullName} autoComplete="name" required errors={fe?.fullName} />
-      <Input label="Mobile number" name="phone" type="tel" inputMode="numeric" defaultValue={phone} autoComplete="tel-national" required errors={fe?.phone} />
+      <Input
+        label="Mobile number"
+        name="phone"
+        type="tel"
+        inputMode="numeric"
+        defaultValue={phone}
+        autoComplete="tel-national"
+        required
+        errors={fe?.phone}
+      />
       <div className="space-y-3 sm:col-span-2">
         <FormMessage state={state} />
         <SubmitButton pendingText="Saving…">Save profile</SubmitButton>

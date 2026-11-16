@@ -15,10 +15,7 @@ export async function updateProfileAction(_prev: ActionResult | null, formData: 
   const parsed = parseForm(ProfileInput, formData, ["fullName", "phone"]);
   if (!parsed.success) return fail("Please check the highlighted fields.", parsed.fieldErrors);
   const supabase = await createClient();
-  const { error } = await supabase
-    .from("profiles")
-    .update({ full_name: parsed.data.fullName, phone: parsed.data.phone })
-    .eq("id", user.id);
+  const { error } = await supabase.from("profiles").update({ full_name: parsed.data.fullName, phone: parsed.data.phone }).eq("id", user.id);
   if (error) return fail(friendlyDbError(error, "updateProfile"));
   revalidatePath("/account");
   return ok(undefined, "Profile saved.");
@@ -32,8 +29,16 @@ export async function saveAddressAction(_prev: ActionResult | null, formData: Fo
   const a = parsed.data;
   const supabase = await createClient();
   const row = {
-    label: a.label, full_name: a.fullName, phone: a.phone, line1: a.line1, line2: a.line2,
-    landmark: a.landmark, city: a.city, state: a.state, pincode: a.pincode, is_default: a.isDefault === "on",
+    label: a.label,
+    full_name: a.fullName,
+    phone: a.phone,
+    line1: a.line1,
+    line2: a.line2,
+    landmark: a.landmark,
+    city: a.city,
+    state: a.state,
+    pincode: a.pincode,
+    is_default: a.isDefault === "on",
   };
   if (row.is_default) {
     await supabase.from("addresses").update({ is_default: false }).eq("user_id", user.id);

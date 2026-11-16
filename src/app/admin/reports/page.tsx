@@ -24,11 +24,21 @@ export default async function ReportsPage({ searchParams }: PageProps<"/admin/re
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Reports</h1>
-          <p className="mt-1 text-muted-strong">{formatDate(report.from)} – {formatDate(report.to)} · cancelled orders excluded</p>
+          <p className="mt-1 text-muted-strong">
+            {formatDate(report.from)} – {formatDate(report.to)} · cancelled orders excluded
+          </p>
         </div>
         <nav className="flex rounded-full border border-line bg-surface p-1" aria-label="Date range">
           {RANGES.map((r) => (
-            <Link key={r} href={`/admin/reports?days=${r}`} aria-current={r === days ? "page" : undefined} className={cn("rounded-full px-4 py-1.5 text-sm font-semibold", r === days ? "bg-forest text-white" : "text-muted-strong hover:text-forest")}>
+            <Link
+              key={r}
+              href={`/admin/reports?days=${r}`}
+              aria-current={r === days ? "page" : undefined}
+              className={cn(
+                "rounded-full px-4 py-1.5 text-sm font-semibold",
+                r === days ? "bg-forest text-white" : "text-muted-strong hover:text-forest",
+              )}
+            >
               {r} days
             </Link>
           ))}
@@ -55,10 +65,20 @@ export default async function ReportsPage({ searchParams }: PageProps<"/admin/re
           <details className="mt-4 text-sm">
             <summary className="cursor-pointer font-semibold text-primary">Show as table</summary>
             <table className="mt-3 w-full text-left">
-              <thead className="text-xs text-muted-strong uppercase"><tr><th className="py-1.5">Day</th><th className="py-1.5 text-right">Orders</th><th className="py-1.5 text-right">Revenue</th></tr></thead>
+              <thead className="text-xs text-muted-strong uppercase">
+                <tr>
+                  <th className="py-1.5">Day</th>
+                  <th className="py-1.5 text-right">Orders</th>
+                  <th className="py-1.5 text-right">Revenue</th>
+                </tr>
+              </thead>
               <tbody className="divide-y divide-line">
                 {report.series.map((d) => (
-                  <tr key={d.day}><td className="py-1.5">{formatDate(d.day)}</td><td className="py-1.5 text-right tabular-nums">{d.orders}</td><td className="py-1.5 text-right tabular-nums">{formatINR(d.revenuePaise)}</td></tr>
+                  <tr key={d.day}>
+                    <td className="py-1.5">{formatDate(d.day)}</td>
+                    <td className="py-1.5 text-right tabular-nums">{d.orders}</td>
+                    <td className="py-1.5 text-right tabular-nums">{formatINR(d.revenuePaise)}</td>
+                  </tr>
                 ))}
               </tbody>
             </table>
@@ -71,14 +91,21 @@ export default async function ReportsPage({ searchParams }: PageProps<"/admin/re
         {report.topProducts.length ? (
           <table className="w-full text-left text-sm">
             <thead className="border-b border-line text-xs font-semibold tracking-wide text-muted-strong uppercase">
-              <tr><th className="px-5 py-3">#</th><th className="px-3 py-3">Product</th><th className="px-3 py-3 text-right">Sold</th><th className="px-5 py-3 text-right">Revenue</th></tr>
+              <tr>
+                <th className="px-5 py-3">#</th>
+                <th className="px-3 py-3">Product</th>
+                <th className="px-3 py-3 text-right">Sold</th>
+                <th className="px-5 py-3 text-right">Revenue</th>
+              </tr>
             </thead>
             <tbody className="divide-y divide-line">
               {report.topProducts.map((p, i) => (
                 <tr key={p.productName}>
                   <td className="px-5 py-3 text-muted-strong">{i + 1}</td>
                   <td className="px-3 py-3 font-semibold">{p.productName}</td>
-                  <td className="px-3 py-3 text-right tabular-nums">{formatQty(p.quantitySold)} {UNIT_LABEL[p.unit]}</td>
+                  <td className="px-3 py-3 text-right tabular-nums">
+                    {formatQty(p.quantitySold)} {UNIT_LABEL[p.unit]}
+                  </td>
                   <td className="px-5 py-3 text-right font-semibold tabular-nums">{formatINR(p.revenuePaise)}</td>
                 </tr>
               ))}

@@ -15,7 +15,9 @@ export function CartButton() {
       <ShoppingBag className="size-[1.125rem]" aria-hidden="true" />
       <span className="hidden sm:inline">Cart</span>
       {ready && count > 0 && (
-        <span className="grid min-w-5 place-items-center rounded-full bg-white px-1.5 text-xs font-bold text-forest tabular-nums">{count}</span>
+        <span className="grid min-w-5 place-items-center rounded-full bg-white px-1.5 text-xs font-bold text-forest tabular-nums">
+          {count}
+        </span>
       )}
     </Link>
   );

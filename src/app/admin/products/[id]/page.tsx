@@ -17,10 +17,16 @@ export default async function EditProductPage({ params }: PageProps<"/admin/prod
   if (!product) notFound();
   return (
     <div className="mx-auto max-w-4xl">
-      <Link href="/admin/products" className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-forest"><ArrowLeft className="size-4" /> Products</Link>
+      <Link href="/admin/products" className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-forest">
+        <ArrowLeft className="size-4" /> Products
+      </Link>
       <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">{product.name}</h1>
-        {product.isActive && <Link href={`/products/${product.slug}`} target="_blank" className="text-sm font-semibold text-primary hover:text-forest">View in store</Link>}
+        {product.isActive && (
+          <Link href={`/products/${product.slug}`} target="_blank" className="text-sm font-semibold text-primary hover:text-forest">
+            View in store
+          </Link>
+        )}
       </div>
       <ProductForm product={product} categories={categories.map((c) => ({ id: c.id, name: c.name }))} />
       <ProductDangerZone productId={product.id} name={product.name} />

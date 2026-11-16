@@ -26,7 +26,16 @@ export async function listMyAddresses(userId: string): Promise<Address[]> {
     .limit(10);
   if (error) throw new Error(`listMyAddresses: ${error.message}`);
   return data.map((a) => ({
-    id: a.id, label: a.label, fullName: a.full_name, phone: a.phone, line1: a.line1, line2: a.line2,
-    landmark: a.landmark, city: a.city, state: a.state, pincode: a.pincode, isDefault: a.is_default,
+    id: a.id,
+    label: a.label,
+    fullName: a.full_name,
+    phone: a.phone,
+    line1: a.line1,
+    line2: a.line2,
+    landmark: a.landmark,
+    city: a.city,
+    state: a.state,
+    pincode: a.pincode,
+    isDefault: a.is_default,
   }));
 }

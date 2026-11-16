@@ -6,7 +6,9 @@ export default function Loading() {
       <Skeleton className="h-4 w-16" />
       <Skeleton className="mt-3 h-9 w-72" />
       <div className="mt-7 flex gap-2">
-        {Array.from({ length: 5 }, (_, i) => <Skeleton key={i} className="h-9 w-24 rounded-full" />)}
+        {Array.from({ length: 5 }, (_, i) => (
+          <Skeleton key={i} className="h-9 w-24 rounded-full" />
+        ))}
       </div>
       <div className="mt-12 grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-3 xl:grid-cols-4">
         {Array.from({ length: 8 }, (_, i) => (

@@ -18,7 +18,9 @@ export function SignupForm() {
         </div>
         <p className="mt-4 font-semibold">Check your inbox</p>
         <p className="mt-1 text-sm text-muted-strong">{state.message}</p>
-        <p className="mt-4 text-xs text-muted-strong">Didn&apos;t get it? Check spam, or wait a minute and sign up again with the same email.</p>
+        <p className="mt-4 text-xs text-muted-strong">
+          Didn&apos;t get it? Check spam, or wait a minute and sign up again with the same email.
+        </p>
       </div>
     );
   }
@@ -27,16 +29,47 @@ export function SignupForm() {
     <form action={action} className="space-y-4" noValidate>
       <Input label="Full name" name="fullName" autoComplete="name" required errors={fe?.fullName} />
       <Input label="Email" name="email" type="email" autoComplete="email" required errors={fe?.email} />
-      <Input label="Mobile number" name="phone" type="tel" inputMode="numeric" autoComplete="tel-national" required errors={fe?.phone} hint="10-digit number, used only for delivery updates" />
-      <Input label="Password" name="password" type="password" autoComplete="new-password" required minLength={8} errors={fe?.password} hint="At least 8 characters" />
+      <Input
+        label="Mobile number"
+        name="phone"
+        type="tel"
+        inputMode="numeric"
+        autoComplete="tel-national"
+        required
+        errors={fe?.phone}
+        hint="10-digit number, used only for delivery updates"
+      />
+      <Input
+        label="Password"
+        name="password"
+        type="password"
+        autoComplete="new-password"
+        required
+        minLength={8}
+        errors={fe?.password}
+        hint="At least 8 characters"
+      />
       <Checkbox
         name="acceptTerms"
         required
-        label={<>I agree to the <Link href="/terms" className="text-primary underline" target="_blank">Terms</Link> and <Link href="/privacy" className="text-primary underline" target="_blank">Privacy Policy</Link></>}
+        label={
+          <>
+            I agree to the{" "}
+            <Link href="/terms" className="text-primary underline" target="_blank">
+              Terms
+            </Link>{" "}
+            and{" "}
+            <Link href="/privacy" className="text-primary underline" target="_blank">
+              Privacy Policy
+            </Link>
+          </>
+        }
       />
       {fe?.acceptTerms && <p className="text-xs font-medium text-danger">{fe.acceptTerms[0]}</p>}
       {state && !state.ok && <Alert tone="error">{state.error}</Alert>}
-      <SubmitButton className="w-full" size="lg" pendingText="Creating account…">Create account</SubmitButton>
+      <SubmitButton className="w-full" size="lg" pendingText="Creating account…">
+        Create account
+      </SubmitButton>
     </form>
   );
 }

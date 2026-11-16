@@ -37,7 +37,13 @@ export default async function InventoryPage({ searchParams }: PageProps<"/admin/
         <form className="relative w-full sm:w-72" role="search">
           <input type="hidden" name="filter" value={filter} />
           <Search className="pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-muted" aria-hidden="true" />
-          <input name="q" defaultValue={q} placeholder="Find a product" aria-label="Search products" className="h-11 w-full rounded-full border border-line-strong bg-surface pr-4 pl-10 text-sm focus:border-primary focus:outline-none" />
+          <input
+            name="q"
+            defaultValue={q}
+            placeholder="Find a product"
+            aria-label="Search products"
+            className="h-11 w-full rounded-full border border-line-strong bg-surface pr-4 pl-10 text-sm focus:border-primary focus:outline-none"
+          />
         </form>
       </div>
       <nav className="-mx-4 mt-5 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0" aria-label="Filter stock">
@@ -48,7 +54,9 @@ export default async function InventoryPage({ searchParams }: PageProps<"/admin/
             aria-current={f.value === filter ? "page" : undefined}
             className={cn(
               "shrink-0 rounded-full border px-3.5 py-1.5 text-sm font-semibold",
-              f.value === filter ? "border-forest bg-forest text-white" : "border-line bg-surface text-muted-strong hover:border-primary hover:text-forest",
+              f.value === filter
+                ? "border-forest bg-forest text-white"
+                : "border-line bg-surface text-muted-strong hover:border-primary hover:text-forest",
             )}
           >
             {f.label}
@@ -58,14 +66,26 @@ export default async function InventoryPage({ searchParams }: PageProps<"/admin/
       <Card className="mt-5 overflow-hidden">
         {rows.length ? (
           <ul className="divide-y divide-line">
-            {rows.map((r) => <InventoryItem key={r.productId} row={r} canEditPrices={canEditPrices} />)}
+            {rows.map((r) => (
+              <InventoryItem key={r.productId} row={r} canEditPrices={canEditPrices} />
+            ))}
           </ul>
         ) : (
           <EmptyState
             icon={<Boxes className="size-6" />}
             title={filter === "all" && !q ? "No products yet" : "Nothing to show"}
-            description={filter === "all" && !q ? "Products added by the admin team will appear here for stock updates." : "No products match this filter."}
-            action={filter !== "all" || q ? <LinkButton href="/admin/inventory" variant="outline">Show all</LinkButton> : undefined}
+            description={
+              filter === "all" && !q
+                ? "Products added by the admin team will appear here for stock updates."
+                : "No products match this filter."
+            }
+            action={
+              filter !== "all" || q ? (
+                <LinkButton href="/admin/inventory" variant="outline">
+                  Show all
+                </LinkButton>
+              ) : undefined
+            }
           />
         )}
       </Card>

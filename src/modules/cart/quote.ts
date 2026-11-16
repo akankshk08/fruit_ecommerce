@@ -41,8 +41,14 @@ export async function quoteCart(input: unknown): Promise<ActionResult<CartQuote>
   const lines = parsed.data;
   const settings = await getBusinessSettings();
   const empty: CartQuote = {
-    lines: [], missing: [], subtotalPaise: 0, deliveryFeePaise: 0, totalPaise: 0,
-    freeDeliveryMinPaise: settings.freeDeliveryMinPaise, minOrderPaise: settings.minOrderPaise, acceptingOrders: settings.acceptingOrders,
+    lines: [],
+    missing: [],
+    subtotalPaise: 0,
+    deliveryFeePaise: 0,
+    totalPaise: 0,
+    freeDeliveryMinPaise: settings.freeDeliveryMinPaise,
+    minOrderPaise: settings.minOrderPaise,
+    acceptingOrders: settings.acceptingOrders,
   };
   if (lines.length === 0) return ok(empty);
 

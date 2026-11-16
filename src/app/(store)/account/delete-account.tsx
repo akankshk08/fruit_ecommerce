@@ -14,8 +14,15 @@ export function DeleteAccount() {
   if (!open) {
     return (
       <div className="space-y-3 text-sm text-muted-strong">
-        <p>Your profile, saved addresses and login are deleted. Past orders are kept for the shop&apos;s records with your name, phone and address removed.</p>
-        <Button variant="outline" className="border-danger/30 text-danger hover:border-danger hover:text-danger" onClick={() => setOpen(true)}>
+        <p>
+          Your profile, saved addresses and login are deleted. Past orders are kept for the shop&apos;s records with your name, phone and
+          address removed.
+        </p>
+        <Button
+          variant="outline"
+          className="border-danger/30 text-danger hover:border-danger hover:text-danger"
+          onClick={() => setOpen(true)}
+        >
           Delete my account
         </Button>
       </div>
@@ -29,8 +36,12 @@ export function DeleteAccount() {
       {state && !state.ok && !fe && <Alert tone="error">{state.error}</Alert>}
       {state && !state.ok && fe && <p className="text-sm font-medium text-danger">{state.error}</p>}
       <div className="flex flex-wrap gap-2">
-        <Button variant="outline" onClick={() => setOpen(false)}>Keep my account</Button>
-        <SubmitButton variant="danger" pendingText="Deleting…">Permanently delete</SubmitButton>
+        <Button variant="outline" onClick={() => setOpen(false)}>
+          Keep my account
+        </Button>
+        <SubmitButton variant="danger" pendingText="Deleting…">
+          Permanently delete
+        </SubmitButton>
       </div>
     </form>
   );

@@ -10,8 +10,14 @@ const SUMMARY_SELECT = `
 `;
 
 type SummaryRow = {
-  id: string; order_number: string; status: OrderStatus; customer_name: string; customer_phone: string;
-  total_paise: number; payment_method: OrderSummary["paymentMethod"]; placed_at: string;
+  id: string;
+  order_number: string;
+  status: OrderStatus;
+  customer_name: string;
+  customer_phone: string;
+  total_paise: number;
+  payment_method: OrderSummary["paymentMethod"];
+  placed_at: string;
   shipping_address: { pincode?: string };
   payments: { status: OrderSummary["paymentStatus"]; created_at: string }[];
   order_items: { count: number }[];
@@ -76,7 +82,8 @@ export async function listOrdersForStaff(f: AdminOrderFilters) {
   if (q) {
     const digits = q.replace(/\D/g, "");
     if (/^fb\d+$/i.test(q)) query = query.eq("order_number", q.toUpperCase());
-    else if (digits.length >= 4 && digits.length === q.replace(/[\s+-]/g, "").length) query = query.like("customer_phone", `%${digits.slice(-10)}%`);
+    else if (digits.length >= 4 && digits.length === q.replace(/[\s+-]/g, "").length)
+      query = query.like("customer_phone", `%${digits.slice(-10)}%`);
     else query = query.ilike("customer_name", `%${q.replace(/[\\%_]/g, (c) => `\\${c}`)}%`);
   }
   const { data, error, count } = await query;
@@ -93,20 +100,24 @@ export async function getOrderDetail(orderId: string): Promise<OrderDetail | nul
   const supabase = await createClient();
   const { data: o, error } = await supabase
     .from("orders")
-    .select(`
+    .select(
+      `
       id, order_number, status, customer_id, customer_name, customer_phone, customer_email, shipping_address, instructions,
       subtotal_paise, delivery_fee_paise, discount_paise, total_paise, payment_method, placed_at, cancel_reason,
       payments ( status, provider_reference, paid_at, created_at ),
       order_items ( id, product_id, product_name, variant_label, unit, quantity_in_base, quantity, unit_price_paise, line_total_paise, image_url, created_at ),
       order_status_history ( id, from_status, to_status, note, changed_by, changed_by_role, created_at )
-    `)
+    `,
+    )
     .eq("id", orderId)
     .maybeSingle();
   if (error) throw new Error(`getOrderDetail: ${error.message}`);
   if (!o) return null;
 
   // Names of staff who changed the status (visible to staff only via RLS).
-  const staffIds = [...new Set(o.order_status_history.filter((h) => h.changed_by_role !== "customer" && h.changed_by).map((h) => h.changed_by as string))];
+  const staffIds = [
+    ...new Set(o.order_status_history.filter((h) => h.changed_by_role !== "customer" && h.changed_by).map((h) => h.changed_by as string)),
+  ];
   const names = new Map<string, string>();
   if (staffIds.length) {
     const { data: people } = await supabase.from("profiles").select("id, full_name").in("id", staffIds);

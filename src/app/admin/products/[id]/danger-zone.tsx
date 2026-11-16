@@ -16,8 +16,12 @@ export function ProductDangerZone({ productId, name }: { productId: string; name
   return (
     <Card className="mt-6 border-danger/20 p-5 sm:p-6">
       <h2 className="font-bold">Delete product</h2>
-      <p className="mt-1 text-sm text-muted-strong">To stop selling it temporarily, untick “Visible in store” instead. Past orders keep their details either way.</p>
-      <Button variant="outline" size="sm" className="mt-4 text-danger hover:border-danger hover:text-danger" onClick={() => setOpen(true)}>Delete permanently</Button>
+      <p className="mt-1 text-sm text-muted-strong">
+        To stop selling it temporarily, untick “Visible in store” instead. Past orders keep their details either way.
+      </p>
+      <Button variant="outline" size="sm" className="mt-4 text-danger hover:border-danger hover:text-danger" onClick={() => setOpen(true)}>
+        Delete permanently
+      </Button>
       <ConfirmDialog
         open={open}
         title={`Delete ${name}?`}

@@ -27,9 +27,21 @@ export function PaymentControls({ orderId, status }: { orderId: string; status: 
 
   return (
     <div className="mt-4 flex flex-wrap gap-2">
-      {status !== "paid" && <Button size="sm" onClick={() => setOpen("paid")}>Mark as paid</Button>}
-      {status === "paid" && <Button size="sm" variant="outline" onClick={() => setOpen("refunded")}>Mark refunded</Button>}
-      {status === "pending" && <Button size="sm" variant="ghost" onClick={() => setOpen("failed")}>Payment failed</Button>}
+      {status !== "paid" && (
+        <Button size="sm" onClick={() => setOpen("paid")}>
+          Mark as paid
+        </Button>
+      )}
+      {status === "paid" && (
+        <Button size="sm" variant="outline" onClick={() => setOpen("refunded")}>
+          Mark refunded
+        </Button>
+      )}
+      {status === "pending" && (
+        <Button size="sm" variant="ghost" onClick={() => setOpen("failed")}>
+          Payment failed
+        </Button>
+      )}
       <ConfirmDialog
         open={open !== null}
         title={open === "paid" ? "Confirm payment received" : open === "refunded" ? "Mark payment as refunded?" : "Mark payment as failed?"}
@@ -39,7 +51,15 @@ export function PaymentControls({ orderId, status }: { orderId: string; status: 
         onCancel={() => setOpen(null)}
         onConfirm={() => open && run(open)}
       >
-        {open === "paid" && <Input label="UPI / receipt reference" optional value={reference} onChange={(e) => setReference(e.target.value)} maxLength={120} />}
+        {open === "paid" && (
+          <Input
+            label="UPI / receipt reference"
+            optional
+            value={reference}
+            onChange={(e) => setReference(e.target.value)}
+            maxLength={120}
+          />
+        )}
       </ConfirmDialog>
     </div>
   );

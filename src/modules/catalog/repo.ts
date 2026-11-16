@@ -11,10 +11,24 @@ export const PRODUCT_SELECT = `
 `;
 
 type Row = {
-  id: string; name: string; slug: string; description: string; origin: string; image_url: string | null;
-  base_unit: Unit; is_featured: boolean;
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  origin: string;
+  image_url: string | null;
+  base_unit: Unit;
+  is_featured: boolean;
   category: { name: string; slug: string } | null;
-  variants: { id: string; label: string; quantity_in_base: number | string; price_paise: number; mrp_paise: number | null; sort_order: number; is_active: boolean }[];
+  variants: {
+    id: string;
+    label: string;
+    quantity_in_base: number | string;
+    price_paise: number;
+    mrp_paise: number | null;
+    sort_order: number;
+    is_active: boolean;
+  }[];
   inventory: { stock_quantity: number | string; is_available: boolean; low_stock_threshold: number | string } | null;
 };
 
@@ -53,7 +67,9 @@ const escapeLike = (s: string) => s.replace(/[\\%_]/g, (c) => `\\${c}`);
 
 export const PAGE_SIZE = 24;
 
-export async function listProducts(opts: { categorySlug?: string; q?: string; page?: number; featuredOnly?: boolean; limit?: number } = {}) {
+export async function listProducts(
+  opts: { categorySlug?: string; q?: string; page?: number; featuredOnly?: boolean; limit?: number } = {},
+) {
   const supabase = await createClient();
   const limit = Math.min(opts.limit ?? PAGE_SIZE, 48);
   const page = Math.max(1, Math.min(opts.page ?? 1, 500));

@@ -7,7 +7,10 @@ export const AddressFields = {
   landmark: z.string().trim().max(120).default(""),
   city: z.string().trim().min(2, "Enter your city").max(80),
   state: z.string().trim().min(2, "Enter your state").max(80),
-  pincode: z.string().trim().regex(/^[1-9]\d{5}$/, "Enter a valid 6-digit pincode"),
+  pincode: z
+    .string()
+    .trim()
+    .regex(/^[1-9]\d{5}$/, "Enter a valid 6-digit pincode"),
 };
 
 export const CheckoutInput = z
@@ -25,6 +28,18 @@ export const CheckoutInput = z
   .strict();
 
 export const CHECKOUT_FIELDS = [
-  "name", "phone", "email", "line1", "line2", "landmark", "city", "state", "pincode",
-  "instructions", "paymentMethod", "saveAddress", "idempotencyKey", "items",
+  "name",
+  "phone",
+  "email",
+  "line1",
+  "line2",
+  "landmark",
+  "city",
+  "state",
+  "pincode",
+  "instructions",
+  "paymentMethod",
+  "saveAddress",
+  "idempotencyKey",
+  "items",
 ] as const;

@@ -36,7 +36,11 @@ export async function updateOrderStatusAction(input: z.input<typeof StatusInput>
 }
 
 const PaymentInput = z
-  .object({ orderId: z.string().uuid(), status: z.enum(["pending", "paid", "failed", "refunded"]), reference: z.string().trim().max(120).optional() })
+  .object({
+    orderId: z.string().uuid(),
+    status: z.enum(["pending", "paid", "failed", "refunded"]),
+    reference: z.string().trim().max(120).optional(),
+  })
   .strict();
 
 export async function setPaymentStatusAction(input: z.input<typeof PaymentInput>): Promise<ActionResult> {

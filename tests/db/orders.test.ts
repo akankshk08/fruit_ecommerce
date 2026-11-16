@@ -27,7 +27,9 @@ run("order placement and lifecycle", () => {
         { variant_id: p.v1kg, quantity: 1 },
       ]),
     );
-    const { rows: [order] } = await pool.query("select * from public.orders where id = $1", [id]);
+    const {
+      rows: [order],
+    } = await pool.query("select * from public.orders where id = $1", [id]);
     expect(order).toMatchObject({
       customer_id: alice,
       status: "new",
@@ -42,12 +44,17 @@ run("order placement and lifecycle", () => {
     expect(order.shipping_address).toMatchObject({ pincode: "560001", city: "Bengaluru" });
     expect(await stockOf(p.productId)).toBe(8); // 10 - (2 x 0.5 + 1 x 1)
 
-    const items = await pool.query("select variant_label, quantity, unit_price_paise, line_total_paise, unit from public.order_items where order_id = $1 order by variant_label", [id]);
+    const items = await pool.query(
+      "select variant_label, quantity, unit_price_paise, line_total_paise, unit from public.order_items where order_id = $1 order by variant_label",
+      [id],
+    );
     expect(items.rows).toEqual([
       { variant_label: "1 kg", quantity: 1, unit_price_paise: 4500, line_total_paise: 4500, unit: "kg" },
       { variant_label: "500 g", quantity: 2, unit_price_paise: 2500, line_total_paise: 5000, unit: "kg" },
     ]);
-    const hist = await pool.query("select to_status, changed_by, changed_by_role from public.order_status_history where order_id = $1", [id]);
+    const hist = await pool.query("select to_status, changed_by, changed_by_role from public.order_status_history where order_id = $1", [
+      id,
+    ]);
     expect(hist.rows).toEqual([{ to_status: "new", changed_by: alice, changed_by_role: "customer" }]);
     const pay = await pool.query("select method, status, amount_paise from public.payments where order_id = $1", [id]);
     expect(pay.rows).toEqual([{ method: "cod", status: "pending", amount_paise: 12500 }]);
@@ -60,7 +67,9 @@ run("order placement and lifecycle", () => {
     const id = await as(alice, (c) => placeOrder(c, [{ variant_id: p.v1kg, quantity: 1 }]));
     await pool.query("update public.product_variants set price_paise = 9900, label = '1 kilo' where id = $1", [p.v1kg]);
     await pool.query("update public.products set name = 'Renamed' where id = $1", [p.productId]);
-    const { rows } = await pool.query("select product_name, variant_label, unit_price_paise from public.order_items where order_id = $1", [id]);
+    const { rows } = await pool.query("select product_name, variant_label, unit_price_paise from public.order_items where order_id = $1", [
+      id,
+    ]);
     expect(rows[0].product_name).toMatch(/^Tomato/);
     expect(rows[0]).toMatchObject({ variant_label: "1 kg", unit_price_paise: 4500 });
     // and deleting the product keeps the order line
@@ -93,9 +102,7 @@ run("order placement and lifecycle", () => {
   it("prevents overselling under concurrent checkouts", async () => {
     const p = await createProduct({ stock: 3 });
     const buyers = await Promise.all(Array.from({ length: 6 }, () => createUser("customer")));
-    const results = await Promise.allSettled(
-      buyers.map((b) => as(b, (c) => placeOrder(c, [{ variant_id: p.v1kg, quantity: 1 }]))),
-    );
+    const results = await Promise.allSettled(buyers.map((b) => as(b, (c) => placeOrder(c, [{ variant_id: p.v1kg, quantity: 1 }]))));
     const ok = results.filter((r) => r.status === "fulfilled").length;
     const failed = results.filter((r) => r.status === "rejected");
     expect(ok).toBe(3);
@@ -170,9 +177,7 @@ run("order placement and lifecycle", () => {
     expect(rows.slice(1).every((r) => r.changed_by === owner && r.changed_by_role === "owner")).toBe(true);
     const o = await pool.query("select delivered_at, confirmed_at from public.orders where id = $1", [id]);
     expect(o.rows[0].delivered_at).not.toBeNull();
-    await expect(as(owner, (c) => c.query("select public.update_order_status($1, 'cancelled')", [id]))).rejects.toThrow(
-      "ORDER_CLOSED",
-    );
+    await expect(as(owner, (c) => c.query("select public.update_order_status($1, 'cancelled')", [id]))).rejects.toThrow("ORDER_CLOSED");
     // the customer can follow progress
     const seen = await as(alice, async (c) => (await c.query("select status from public.orders where id = $1", [id])).rows[0].status);
     expect(seen).toBe("delivered");
@@ -214,12 +219,16 @@ run("order placement and lifecycle", () => {
 
   it("reports aggregate non-cancelled sales for staff only", async () => {
     const today = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" });
-    const staff = await as(owner, async (c) =>
-      (await c.query("select sum(orders)::int n from public.report_daily_sales($1::date, $1::date)", [today])).rows[0].n,
+    const staff = await as(
+      owner,
+      async (c) => (await c.query("select sum(orders)::int n from public.report_daily_sales($1::date, $1::date)", [today])).rows[0].n,
     );
     const all = await pool.query("select count(*)::int n from public.orders where status <> 'cancelled'");
     expect(staff).toBe(all.rows[0].n);
-    const top = await as(owner, async (c) => (await c.query("select * from public.report_top_products($1::date, $1::date, 5)", [today])).rows);
+    const top = await as(
+      owner,
+      async (c) => (await c.query("select * from public.report_top_products($1::date, $1::date, 5)", [today])).rows,
+    );
     expect(top.length).toBeGreaterThan(0);
   });
 });

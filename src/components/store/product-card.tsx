@@ -7,7 +7,12 @@ import { AddToCart } from "./add-to-cart";
 export function ProductCard({ product, priority }: { product: ProductView; priority?: boolean }) {
   return (
     <article className="group flex flex-col overflow-hidden rounded-[var(--radius-card)] border border-line bg-surface shadow-[var(--shadow-card)] transition-[box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:shadow-[var(--shadow-lift)]">
-      <Link href={`/products/${product.slug}`} className="relative block aspect-[4/3.4] overflow-hidden bg-beige" tabIndex={-1} aria-hidden="true">
+      <Link
+        href={`/products/${product.slug}`}
+        className="relative block aspect-[4/3.4] overflow-hidden bg-beige"
+        tabIndex={-1}
+        aria-hidden="true"
+      >
         <ProductImage
           src={product.imageUrl}
           alt={product.name}
@@ -16,9 +21,13 @@ export function ProductCard({ product, priority }: { product: ProductView; prior
           className="transition-transform duration-500 group-hover:scale-[1.04]"
         />
         {!product.isAvailable ? (
-          <Badge tone="neutral" className="absolute top-3 left-3 bg-surface/95">Sold out</Badge>
+          <Badge tone="neutral" className="absolute top-3 left-3 bg-surface/95">
+            Sold out
+          </Badge>
         ) : product.lowStock ? (
-          <Badge tone="warning" className="absolute top-3 left-3">Few left</Badge>
+          <Badge tone="warning" className="absolute top-3 left-3">
+            Few left
+          </Badge>
         ) : null}
       </Link>
       <div className="flex flex-1 flex-col gap-3 p-3.5 sm:p-4">

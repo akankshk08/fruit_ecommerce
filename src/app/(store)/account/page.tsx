@@ -27,7 +27,9 @@ export default async function AccountPage() {
           <p className="mt-1 text-muted-strong">{user.email}</p>
         </div>
         <form action={logoutAction}>
-          <Button type="submit" variant="outline" size="sm" icon={<LogOut className="size-4" />}>Log out</Button>
+          <Button type="submit" variant="outline" size="sm" icon={<LogOut className="size-4" />}>
+            Log out
+          </Button>
         </form>
       </div>
 
@@ -38,14 +40,23 @@ export default async function AccountPage() {
             <p className="text-lg font-bold">Welcome to the freshest basket in town</p>
             <p className="text-sm text-white/80">Pick your produce, pay on delivery, and follow your order live.</p>
           </div>
-          <LinkButton href="/shop" variant="beige">Start shopping</LinkButton>
+          <LinkButton href="/shop" variant="beige">
+            Start shopping
+          </LinkButton>
         </div>
       ) : (
-        <Link href="/orders" className="mt-8 flex items-center gap-4 rounded-[var(--radius-card)] border border-line bg-surface p-5 hover:shadow-[var(--shadow-lift)]">
-          <span className="grid size-11 place-items-center rounded-full bg-primary-soft text-primary"><Package className="size-5" aria-hidden="true" /></span>
+        <Link
+          href="/orders"
+          className="mt-8 flex items-center gap-4 rounded-[var(--radius-card)] border border-line bg-surface p-5 hover:shadow-[var(--shadow-lift)]"
+        >
+          <span className="grid size-11 place-items-center rounded-full bg-primary-soft text-primary">
+            <Package className="size-5" aria-hidden="true" />
+          </span>
           <span className="flex-1">
             <span className="block font-bold">My orders</span>
-            <span className="text-sm text-muted-strong">{orders.total} {orders.total === 1 ? "order" : "orders"} · track and view receipts</span>
+            <span className="text-sm text-muted-strong">
+              {orders.total} {orders.total === 1 ? "order" : "orders"} · track and view receipts
+            </span>
           </span>
         </Link>
       )}
@@ -53,20 +64,28 @@ export default async function AccountPage() {
       <div className="mt-8 space-y-6">
         <Card>
           <CardHeader title="Profile" description="Used for delivery updates." />
-          <div className="p-5 sm:p-6"><ProfileForm fullName={user.fullName} phone={user.phone ?? ""} /></div>
+          <div className="p-5 sm:p-6">
+            <ProfileForm fullName={user.fullName} phone={user.phone ?? ""} />
+          </div>
         </Card>
         <Card>
           <CardHeader title="Saved addresses" description="Choose one at checkout in a tap." />
-          <div className="p-5 sm:p-6"><AddressBook addresses={addresses} /></div>
+          <div className="p-5 sm:p-6">
+            <AddressBook addresses={addresses} />
+          </div>
         </Card>
         <Card>
           <CardHeader title="Password" />
-          <div className="p-5 sm:p-6"><PasswordForm /></div>
+          <div className="p-5 sm:p-6">
+            <PasswordForm />
+          </div>
         </Card>
         {user.role === "customer" && (
           <Card className="border-danger/20">
             <CardHeader title="Delete account" description="Permanently remove your account and personal details." />
-            <div className="p-5 sm:p-6"><DeleteAccount /></div>
+            <div className="p-5 sm:p-6">
+              <DeleteAccount />
+            </div>
           </Card>
         )}
       </div>

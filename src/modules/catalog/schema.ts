@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { isAllowedImageUrl } from "@/lib/images";
 import { UNITS } from "./units";
 
 const slug = z
@@ -7,7 +8,7 @@ const slug = z
   .toLowerCase()
   .regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, "Use lowercase letters, numbers and dashes only")
   .max(80);
-const httpsUrl = z.union([z.literal(""), z.string().trim().url().startsWith("https://", "Image link must start with https://").max(500)]);
+const httpsUrl = z.union([z.literal(""), z.string().trim().max(500).refine(isAllowedImageUrl, "Please upload the photo here instead of pasting a link")]);
 const rupees = z.coerce.number().finite().positive("Enter a price above ₹0").max(100000, "That price looks too high");
 
 export const VariantInput = z
@@ -37,7 +38,18 @@ export const ProductInput = z
   })
   .strict();
 
-export const PRODUCT_FIELDS = ["name", "slug", "categoryId", "description", "origin", "baseUnit", "imageUrl", "isActive", "isFeatured", "variants"] as const;
+export const PRODUCT_FIELDS = [
+  "name",
+  "slug",
+  "categoryId",
+  "description",
+  "origin",
+  "baseUnit",
+  "imageUrl",
+  "isActive",
+  "isFeatured",
+  "variants",
+] as const;
 
 export const CategoryInput = z
   .object({

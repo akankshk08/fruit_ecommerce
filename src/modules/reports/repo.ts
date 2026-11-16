@@ -2,8 +2,17 @@ import "server-only";
 import { createClient } from "@/lib/supabase/server";
 import type { Unit } from "@/modules/catalog/units";
 
-export interface DailySales { day: string; orders: number; revenuePaise: number }
-export interface TopProduct { productName: string; quantitySold: number; unit: Unit; revenuePaise: number }
+export interface DailySales {
+  day: string;
+  orders: number;
+  revenuePaise: number;
+}
+export interface TopProduct {
+  productName: string;
+  quantitySold: number;
+  unit: Unit;
+  revenuePaise: number;
+}
 
 const istDate = (d: Date) => d.toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" });
 
@@ -28,13 +37,18 @@ export async function salesReport(days: number) {
     orders: Number(d.orders),
     revenuePaise: Number(d.revenue_paise),
   }));
-  const topProducts: TopProduct[] = (top.data ?? []).map((t: { product_name: string; quantity_sold: string; unit: Unit; revenue_paise: number }) => ({
-    productName: t.product_name,
-    quantitySold: Number(t.quantity_sold),
-    unit: t.unit,
-    revenuePaise: Number(t.revenue_paise),
-  }));
-  const totals = series.reduce((a, d) => ({ orders: a.orders + d.orders, revenuePaise: a.revenuePaise + d.revenuePaise }), { orders: 0, revenuePaise: 0 });
+  const topProducts: TopProduct[] = (top.data ?? []).map(
+    (t: { product_name: string; quantity_sold: string; unit: Unit; revenue_paise: number }) => ({
+      productName: t.product_name,
+      quantitySold: Number(t.quantity_sold),
+      unit: t.unit,
+      revenuePaise: Number(t.revenue_paise),
+    }),
+  );
+  const totals = series.reduce((a, d) => ({ orders: a.orders + d.orders, revenuePaise: a.revenuePaise + d.revenuePaise }), {
+    orders: 0,
+    revenuePaise: 0,
+  });
   return { series, topProducts, totals, from, to };
 }
 

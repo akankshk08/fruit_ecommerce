@@ -20,11 +20,16 @@ export async function StoreHeader() {
       {settings && (
         <div className="bg-forest text-center text-xs font-medium text-white/90">
           <p className="mx-auto max-w-7xl px-4 py-2">
-            {settings.acceptingOrders
-              ? settings.freeDeliveryMinPaise > 0
-                ? `Free delivery on orders above ${formatINR(settings.freeDeliveryMinPaise)} · Harvested fresh every morning`
-                : "Free delivery on every order · Harvested fresh every morning"
-              : "We're taking a short break and not accepting orders right now."}
+            {settings.acceptingOrders ? (
+              <>
+                {settings.freeDeliveryMinPaise > 0
+                  ? `Free delivery above ${formatINR(settings.freeDeliveryMinPaise)}`
+                  : "Free delivery on every order"}
+                <span className="hidden sm:inline"> · Harvested fresh every morning</span>
+              </>
+            ) : (
+              "We're taking a short break and not accepting orders right now."
+            )}
           </p>
         </div>
       )}
@@ -34,11 +39,18 @@ export async function StoreHeader() {
           <Logo name={settings?.businessName} />
         </Link>
         <nav aria-label="Categories" className="ml-6 hidden items-center gap-1 lg:flex">
-          <Link href="/shop" className="rounded-full px-3 py-2 text-sm font-semibold text-ink transition-colors hover:bg-primary-soft hover:text-forest">
+          <Link
+            href="/shop"
+            className="rounded-full px-3 py-2 text-sm font-semibold text-ink transition-colors hover:bg-primary-soft hover:text-forest"
+          >
             Shop all
           </Link>
           {links.map((l) => (
-            <Link key={l.href} href={l.href} className="rounded-full px-3 py-2 text-sm font-medium text-muted-strong transition-colors hover:bg-primary-soft hover:text-forest">
+            <Link
+              key={l.href}
+              href={l.href}
+              className="rounded-full px-3 py-2 text-sm font-medium text-muted-strong transition-colors hover:bg-primary-soft hover:text-forest"
+            >
               {l.label}
             </Link>
           ))}
@@ -56,7 +68,10 @@ export async function StoreHeader() {
             />
           </form>
           {isStaffRole(user?.role) && (
-            <Link href="/admin" className="hidden rounded-full bg-beige px-3.5 py-2 text-sm font-semibold text-forest hover:bg-beige-deep sm:inline-flex">
+            <Link
+              href="/admin"
+              className="hidden rounded-full bg-beige px-3.5 py-2 text-sm font-semibold text-forest hover:bg-beige-deep sm:inline-flex"
+            >
               Dashboard
             </Link>
           )}

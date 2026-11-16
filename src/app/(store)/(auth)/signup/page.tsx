@@ -13,7 +13,14 @@ export default async function SignupPage() {
     <AuthCard
       title="Create your account"
       subtitle="Order in under a minute and track every delivery."
-      footer={<>Already have an account? <Link href="/login" className="font-semibold text-primary hover:text-forest">Log in</Link></>}
+      footer={
+        <>
+          Already have an account?{" "}
+          <Link href="/login" className="font-semibold text-primary hover:text-forest">
+            Log in
+          </Link>
+        </>
+      }
     >
       <SignupForm />
     </AuthCard>

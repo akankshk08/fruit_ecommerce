@@ -36,7 +36,9 @@ export function AddToCart({ product, layout = "card" }: { product: ProductView; 
               className={cn(
                 "rounded-full border font-semibold transition-colors disabled:cursor-not-allowed disabled:line-through disabled:opacity-45",
                 page ? "px-4 py-2 text-sm" : "px-2.5 py-1 text-xs",
-                v.id === variant.id ? "border-primary bg-primary-soft text-forest" : "border-line text-muted-strong hover:border-primary/50",
+                v.id === variant.id
+                  ? "border-primary bg-primary-soft text-forest"
+                  : "border-line text-muted-strong hover:border-primary/50",
               )}
             >
               {v.label}
@@ -47,7 +49,9 @@ export function AddToCart({ product, layout = "card" }: { product: ProductView; 
       <div className="flex items-end justify-between gap-2">
         <div>
           <div className="flex items-baseline gap-2">
-            <span className={cn("font-extrabold text-ink tabular-nums", page ? "text-3xl" : "text-lg")}>{formatINR(variant.pricePaise)}</span>
+            <span className={cn("font-extrabold text-ink tabular-nums", page ? "text-3xl" : "text-lg")}>
+              {formatINR(variant.pricePaise)}
+            </span>
             {variant.mrpPaise && variant.mrpPaise > variant.pricePaise && (
               <span className="text-sm text-muted line-through tabular-nums">{formatINR(variant.mrpPaise)}</span>
             )}
@@ -57,7 +61,12 @@ export function AddToCart({ product, layout = "card" }: { product: ProductView; 
         {!variant.inStock ? (
           <span className="pb-1 text-xs font-semibold text-muted">Out of stock</span>
         ) : inCart > 0 ? (
-          <QuantityStepper value={inCart} onChange={(n) => cart.setQuantity(variant.id, n)} size={page ? "md" : "sm"} label={`${product.name} ${variant.label}`} />
+          <QuantityStepper
+            value={inCart}
+            onChange={(n) => cart.setQuantity(variant.id, n)}
+            size={page ? "md" : "sm"}
+            label={`${product.name} ${variant.label}`}
+          />
         ) : (
           <button
             type="button"

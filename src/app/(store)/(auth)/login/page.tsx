@@ -17,9 +17,20 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
     <AuthCard
       title="Welcome back"
       subtitle="Log in to check out and track your orders."
-      footer={<>New here? <Link href={`/signup${next ? `?next=${encodeURIComponent(next)}` : ""}`} className="font-semibold text-primary hover:text-forest">Create an account</Link></>}
+      footer={
+        <>
+          New here?{" "}
+          <Link href={`/signup${next ? `?next=${encodeURIComponent(next)}` : ""}`} className="font-semibold text-primary hover:text-forest">
+            Create an account
+          </Link>
+        </>
+      }
     >
-      {sp.error === "link" && <Alert tone="error" className="mb-5">That link has expired or was already used. Please try again.</Alert>}
+      {sp.error === "link" && (
+        <Alert tone="error" className="mb-5">
+          That link has expired or was already used. Please try again.
+        </Alert>
+      )}
       <LoginForm next={next} />
     </AuthCard>
   );

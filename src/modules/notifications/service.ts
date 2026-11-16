@@ -14,7 +14,9 @@ export async function notifyNewOrder(orderId: string): Promise<void> {
   if (!to) return;
   const { data: o } = await createAdminClient()
     .from("orders")
-    .select("order_number, customer_name, customer_phone, total_paise, payment_method, instructions, shipping_address, order_items(product_name, variant_label, quantity)")
+    .select(
+      "order_number, customer_name, customer_phone, total_paise, payment_method, instructions, shipping_address, order_items(product_name, variant_label, quantity)",
+    )
     .eq("id", orderId)
     .maybeSingle();
   if (!o) return;

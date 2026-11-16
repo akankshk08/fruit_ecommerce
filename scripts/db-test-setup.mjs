@@ -26,7 +26,9 @@ export async function setupTestDatabase() {
   await db.connect();
   const dir = join(process.cwd(), "supabase");
   await db.query(readFileSync(join(dir, "tests", "supabase_stub.sql"), "utf8"));
-  const files = readdirSync(join(dir, "migrations")).filter((f) => f.endsWith(".sql")).sort();
+  const files = readdirSync(join(dir, "migrations"))
+    .filter((f) => f.endsWith(".sql"))
+    .sort();
   for (const f of files) {
     try {
       await db.query(readFileSync(join(dir, "migrations", f), "utf8"));

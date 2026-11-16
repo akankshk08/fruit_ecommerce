@@ -40,7 +40,11 @@ function getSnapshot(): CartLineInput[] {
 }
 
 function setLinesStore(update: (prev: CartLineInput[]) => CartLineInput[]) {
-  snapshot = update(getSnapshot());
+  const prev = getSnapshot();
+  const next = update(prev);
+  // No-op updates must not notify subscribers (avoids render loops).
+  if (next === prev || JSON.stringify(next) === JSON.stringify(prev)) return;
+  snapshot = next;
   try {
     localStorage.setItem(KEY, JSON.stringify(snapshot));
   } catch {
@@ -67,7 +71,11 @@ const noopSubscribe = () => () => {};
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const lines = useSyncExternalStore(subscribe, getSnapshot, () => EMPTY);
-  const ready = useSyncExternalStore(noopSubscribe, () => true, () => false);
+  const ready = useSyncExternalStore(
+    noopSubscribe,
+    () => true,
+    () => false,
+  );
   const add = useCallback((variantId: string, quantity = 1) => {
     setLinesStore((prev) => {
       const existing = prev.find((l) => l.variantId === variantId);
@@ -78,7 +86,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, []);
   const setQuantity = useCallback((variantId: string, quantity: number) => {
     setLinesStore((prev) =>
-      quantity <= 0 ? prev.filter((l) => l.variantId !== variantId) : prev.map((l) => (l.variantId === variantId ? { ...l, quantity: Math.min(MAX_QTY, Math.floor(quantity)) } : l)),
+      quantity <= 0
+        ? prev.filter((l) => l.variantId !== variantId)
+        : prev.map((l) => (l.variantId === variantId ? { ...l, quantity: Math.min(MAX_QTY, Math.floor(quantity)) } : l)),
     );
   }, []);
   const remove = useCallback((variantId: string) => setLinesStore((prev) => prev.filter((l) => l.variantId !== variantId)), []);

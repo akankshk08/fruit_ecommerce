@@ -8,10 +8,10 @@ type Role = "customer" | "owner" | "admin";
 /** Inserts an auth user (fires the profile trigger) and sets its role. */
 export async function createUser(role: Role = "customer", phone = "9876543210") {
   const email = `${role}-${randomUUID()}@test.local`;
-  const { rows } = await pool.query(
-    "insert into auth.users (email, raw_user_meta_data) values ($1, $2) returning id",
-    [email, JSON.stringify({ full_name: `Test ${role}`, phone })],
-  );
+  const { rows } = await pool.query("insert into auth.users (email, raw_user_meta_data) values ($1, $2) returning id", [
+    email,
+    JSON.stringify({ full_name: `Test ${role}`, phone }),
+  ]);
   const id: string = rows[0].id;
   if (role !== "customer") await pool.query("update public.profiles set role = $1 where id = $2", [role, id]);
   return id;
@@ -40,10 +40,9 @@ export async function as<T>(uid: string | null, fn: (c: pg.PoolClient) => Promis
 /** Creates a category + product + two variants (500 g, 1 kg) with stock. */
 export async function createProduct(opts: { stock?: number; price500?: number; price1kg?: number; active?: boolean } = {}) {
   const slug = `p-${randomUUID().slice(0, 8)}`;
-  const cat = await pool.query(
-    "insert into public.categories (name, slug) values ($1, $1) returning id",
-    [`c-${randomUUID().slice(0, 8)}`],
-  );
+  const cat = await pool.query("insert into public.categories (name, slug) values ($1, $1) returning id", [
+    `c-${randomUUID().slice(0, 8)}`,
+  ]);
   const prod = await pool.query(
     "insert into public.products (category_id, name, slug, base_unit, is_active) values ($1, $2, $3, 'kg', $4) returning id",
     [cat.rows[0].id, `Tomato ${slug}`, slug, opts.active ?? true],

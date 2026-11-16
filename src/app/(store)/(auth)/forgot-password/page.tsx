@@ -15,12 +15,20 @@ export default function ForgotPasswordPage() {
     <AuthCard
       title="Reset your password"
       subtitle="Enter your email and we'll send you a secure link."
-      footer={<Link href="/login" className="font-semibold text-primary hover:text-forest">Back to log in</Link>}
+      footer={
+        <Link href="/login" className="font-semibold text-primary hover:text-forest">
+          Back to log in
+        </Link>
+      }
     >
       <form action={action} className="space-y-4" noValidate>
         <Input label="Email" name="email" type="email" autoComplete="email" required errors={fe?.email} />
         <FormMessage state={state} />
-        {!state?.ok && <SubmitButton className="w-full" size="lg" pendingText="Sending…">Send reset link</SubmitButton>}
+        {!state?.ok && (
+          <SubmitButton className="w-full" size="lg" pendingText="Sending…">
+            Send reset link
+          </SubmitButton>
+        )}
       </form>
     </AuthCard>
   );

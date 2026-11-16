@@ -37,7 +37,9 @@ export default async function ShopPage({ searchParams }: PageProps<"/shop">) {
       </header>
 
       <nav aria-label="Filter by category" className="-mx-4 mt-7 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:px-0">
-        <Chip href={href({ category: undefined, page: undefined })} active={!category}>All</Chip>
+        <Chip href={href({ category: undefined, page: undefined })} active={!category}>
+          All
+        </Chip>
         {categories.map((c) => (
           <Chip key={c.id} href={href({ category: c.slug, page: undefined })} active={c.slug === category}>
             {c.name}
@@ -48,7 +50,9 @@ export default async function ShopPage({ searchParams }: PageProps<"/shop">) {
       <div className="mt-8">
         {result.products.length ? (
           <>
-            <p className="mb-4 text-sm text-muted-strong">{result.total} {result.total === 1 ? "product" : "products"}</p>
+            <p className="mb-4 text-sm text-muted-strong">
+              {result.total} {result.total === 1 ? "product" : "products"}
+            </p>
             <ProductGrid products={result.products} />
           </>
         ) : (
@@ -56,16 +60,30 @@ export default async function ShopPage({ searchParams }: PageProps<"/shop">) {
             icon={<SearchX className="size-6" />}
             title={q ? "No matches found" : "Nothing here yet"}
             description={q ? "Try a different spelling, or browse all our produce." : "We're restocking this section. Check back soon."}
-            action={<LinkButton href="/shop" variant="outline">Browse everything</LinkButton>}
+            action={
+              <LinkButton href="/shop" variant="outline">
+                Browse everything
+              </LinkButton>
+            }
           />
         )}
       </div>
 
       {pages > 1 && (
         <nav aria-label="Pages" className="mt-10 flex items-center justify-center gap-2">
-          {page > 1 && <LinkButton href={href({ page: page - 1 })} variant="outline" size="sm">Previous</LinkButton>}
-          <span className="px-3 text-sm text-muted-strong">Page {page} of {pages}</span>
-          {page < pages && <LinkButton href={href({ page: page + 1 })} variant="outline" size="sm">Next</LinkButton>}
+          {page > 1 && (
+            <LinkButton href={href({ page: page - 1 })} variant="outline" size="sm">
+              Previous
+            </LinkButton>
+          )}
+          <span className="px-3 text-sm text-muted-strong">
+            Page {page} of {pages}
+          </span>
+          {page < pages && (
+            <LinkButton href={href({ page: page + 1 })} variant="outline" size="sm">
+              Next
+            </LinkButton>
+          )}
         </nav>
       )}
     </div>

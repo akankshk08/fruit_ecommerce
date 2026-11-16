@@ -23,12 +23,14 @@ export async function listInventory(opts: { filter?: InventoryFilter; q?: string
   const supabase = await createClient();
   let query = supabase
     .from("products")
-    .select(`
+    .select(
+      `
       id, name, image_url, base_unit, is_active,
       category:categories ( name ),
       inventory ( stock_quantity, low_stock_threshold, is_available, updated_at ),
       variants:product_variants ( id, label, price_paise, mrp_paise, is_active, sort_order )
-    `)
+    `,
+    )
     .order("name")
     .limit(500);
   const q = opts.q?.trim().slice(0, 60);
@@ -36,7 +38,12 @@ export async function listInventory(opts: { filter?: InventoryFilter; q?: string
   const { data, error } = await query;
   if (error) throw new Error(`listInventory: ${error.message}`);
   const rows: InventoryRow[] = data.map((p) => {
-    const inv = p.inventory as unknown as { stock_quantity: string; low_stock_threshold: string; is_available: boolean; updated_at: string } | null;
+    const inv = p.inventory as unknown as {
+      stock_quantity: string;
+      low_stock_threshold: string;
+      is_available: boolean;
+      updated_at: string;
+    } | null;
     const stock = Number(inv?.stock_quantity ?? 0);
     const threshold = Number(inv?.low_stock_threshold ?? 0);
     return {

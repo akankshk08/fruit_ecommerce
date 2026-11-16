@@ -18,10 +18,19 @@ export async function listProductsForAdmin(q?: string): Promise<AdminProductList
   const supabase = await createClient();
   let query = supabase
     .from("products")
-    .select("id, name, slug, image_url, is_active, is_featured, category:categories(name), variants:product_variants(price_paise, is_active)")
+    .select(
+      "id, name, slug, image_url, is_active, is_featured, category:categories(name), variants:product_variants(price_paise, is_active)",
+    )
     .order("name")
     .limit(500);
-  if (q?.trim()) query = query.ilike("name", `%${q.trim().slice(0, 60).replace(/[\\%_]/g, (c) => `\\${c}`)}%`);
+  if (q?.trim())
+    query = query.ilike(
+      "name",
+      `%${q
+        .trim()
+        .slice(0, 60)
+        .replace(/[\\%_]/g, (c) => `\\${c}`)}%`,
+    );
   const { data, error } = await query;
   if (error) throw new Error(`listProductsForAdmin: ${error.message}`);
   return data.map((p) => {
@@ -59,7 +68,9 @@ export async function getProductForAdmin(id: string): Promise<AdminProduct | nul
   const supabase = await createClient();
   const { data: p, error } = await supabase
     .from("products")
-    .select("id, name, slug, category_id, description, origin, base_unit, image_url, is_active, is_featured, variants:product_variants(id, label, quantity_in_base, price_paise, mrp_paise, is_active, sort_order)")
+    .select(
+      "id, name, slug, category_id, description, origin, base_unit, image_url, is_active, is_featured, variants:product_variants(id, label, quantity_in_base, price_paise, mrp_paise, is_active, sort_order)",
+    )
     .eq("id", id)
     .maybeSingle();
   if (error) throw new Error(`getProductForAdmin: ${error.message}`);

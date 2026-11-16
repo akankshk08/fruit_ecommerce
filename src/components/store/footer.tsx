@@ -15,26 +15,58 @@ export async function StoreFooter() {
           </p>
           {s && (s.phone || s.email) && (
             <p className="mt-4 text-sm text-white/70">
-              {s.phone && <a href={`tel:${s.phone.replace(/\s/g, "")}`} className="hover:text-white">{s.phone}</a>}
+              {s.phone && (
+                <a href={`tel:${s.phone.replace(/\s/g, "")}`} className="hover:text-white">
+                  {s.phone}
+                </a>
+              )}
               {s.phone && s.email && " · "}
-              {s.email && <a href={`mailto:${s.email}`} className="hover:text-white">{s.email}</a>}
+              {s.email && (
+                <a href={`mailto:${s.email}`} className="hover:text-white">
+                  {s.email}
+                </a>
+              )}
             </p>
           )}
         </div>
         <div>
           <h2 className="text-sm font-bold tracking-wide text-white uppercase">Shop</h2>
           <ul className="mt-4 space-y-2.5 text-sm">
-            <li><Link className="hover:text-white" href="/shop">All products</Link></li>
-            <li><Link className="hover:text-white" href="/cart">Your cart</Link></li>
-            <li><Link className="hover:text-white" href="/orders">Track an order</Link></li>
+            <li>
+              <Link className="hover:text-white" href="/shop">
+                All products
+              </Link>
+            </li>
+            <li>
+              <Link className="hover:text-white" href="/cart">
+                Your cart
+              </Link>
+            </li>
+            <li>
+              <Link className="hover:text-white" href="/orders">
+                Track an order
+              </Link>
+            </li>
           </ul>
         </div>
         <div>
           <h2 className="text-sm font-bold tracking-wide text-white uppercase">Company</h2>
           <ul className="mt-4 space-y-2.5 text-sm">
-            <li><Link className="hover:text-white" href="/account">My account</Link></li>
-            <li><Link className="hover:text-white" href="/privacy">Privacy policy</Link></li>
-            <li><Link className="hover:text-white" href="/terms">Terms of service</Link></li>
+            <li>
+              <Link className="hover:text-white" href="/account">
+                My account
+              </Link>
+            </li>
+            <li>
+              <Link className="hover:text-white" href="/privacy">
+                Privacy policy
+              </Link>
+            </li>
+            <li>
+              <Link className="hover:text-white" href="/terms">
+                Terms of service
+              </Link>
+            </li>
           </ul>
         </div>
       </div>

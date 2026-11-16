@@ -38,7 +38,7 @@ export async function signupAction(_prev: ActionResult | null, formData: FormDat
 
   const supabase = await createClient();
   const { fullName, email, phone, password } = parsed.data;
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
@@ -52,6 +52,8 @@ export async function signupAction(_prev: ActionResult | null, formData: FormDat
     console.error(JSON.stringify({ level: "error", context: "signup", code: error.code }));
     return fail("We couldn't create your account right now. Please try again.");
   }
+  // Projects with email confirmation switched off get a session straight away.
+  if (data.session) redirect("/account");
   // Same response whether or not the email was already registered (no account enumeration).
   return ok(undefined, "Almost there! We've sent a confirmation link to your email. Open it to activate your account.");
 }
@@ -143,7 +145,13 @@ export async function deleteAccountAction(_prev: ActionResult | null, formData: 
   }
   const { error: anonError } = await admin
     .from("orders")
-    .update({ customer_name: "Deleted customer", customer_phone: "9000000000", customer_email: null, instructions: "", shipping_address: { removed: true } })
+    .update({
+      customer_name: "Deleted customer",
+      customer_phone: "9000000000",
+      customer_email: null,
+      instructions: "",
+      shipping_address: { removed: true },
+    })
     .eq("customer_id", user.id)
     .in("status", ["delivered", "cancelled"]);
   if (anonError) {

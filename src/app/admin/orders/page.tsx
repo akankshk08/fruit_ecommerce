@@ -39,7 +39,9 @@ export default async function AdminOrdersPage({ searchParams }: PageProps<"/admi
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Orders</h1>
-          <p className="mt-1 text-muted-strong">{result.total} {status === "all" ? "in total" : STATUS_LABEL[status as OrderStatus]?.toLowerCase() ?? "open"}</p>
+          <p className="mt-1 text-muted-strong">
+            {result.total} {status === "all" ? "in total" : (STATUS_LABEL[status as OrderStatus]?.toLowerCase() ?? "open")}
+          </p>
         </div>
         <form className="relative w-full sm:w-80" role="search">
           <input type="hidden" name="status" value={status} />
@@ -62,7 +64,9 @@ export default async function AdminOrdersPage({ searchParams }: PageProps<"/admi
             aria-current={t.value === status ? "page" : undefined}
             className={cn(
               "shrink-0 rounded-full border px-3.5 py-1.5 text-sm font-semibold transition-colors",
-              t.value === status ? "border-forest bg-forest text-white" : "border-line bg-surface text-muted-strong hover:border-primary hover:text-forest",
+              t.value === status
+                ? "border-forest bg-forest text-white"
+                : "border-line bg-surface text-muted-strong hover:border-primary hover:text-forest",
             )}
           >
             {t.label}
@@ -74,15 +78,29 @@ export default async function AdminOrdersPage({ searchParams }: PageProps<"/admi
         {result.orders.length ? (
           <OrdersTable orders={result.orders} />
         ) : (
-          <EmptyState icon={<ReceiptText className="size-6" />} title={q ? "No matching orders" : "No orders here"} description={q ? "Try the full order number (e.g. FB10023) or a phone number." : "Orders in this status will show up here."} />
+          <EmptyState
+            icon={<ReceiptText className="size-6" />}
+            title={q ? "No matching orders" : "No orders here"}
+            description={q ? "Try the full order number (e.g. FB10023) or a phone number." : "Orders in this status will show up here."}
+          />
         )}
       </Card>
 
       {pages > 1 && (
         <nav className="mt-6 flex items-center justify-center gap-2" aria-label="Pages">
-          {page > 1 && <LinkButton variant="outline" size="sm" href={href({ page: page - 1 })}>Previous</LinkButton>}
-          <span className="px-2 text-sm text-muted-strong">Page {page} of {pages}</span>
-          {page < pages && <LinkButton variant="outline" size="sm" href={href({ page: page + 1 })}>Next</LinkButton>}
+          {page > 1 && (
+            <LinkButton variant="outline" size="sm" href={href({ page: page - 1 })}>
+              Previous
+            </LinkButton>
+          )}
+          <span className="px-2 text-sm text-muted-strong">
+            Page {page} of {pages}
+          </span>
+          {page < pages && (
+            <LinkButton variant="outline" size="sm" href={href({ page: page + 1 })}>
+              Next
+            </LinkButton>
+          )}
         </nav>
       )}
     </div>

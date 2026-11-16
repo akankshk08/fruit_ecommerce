@@ -14,16 +14,29 @@ export function ResetPasswordForm() {
     return (
       <div className="space-y-4">
         <FormMessage state={state} />
-        <LinkButton href="/" className="w-full">Continue shopping</LinkButton>
+        <LinkButton href="/" className="w-full">
+          Continue shopping
+        </LinkButton>
       </div>
     );
   }
   return (
     <form action={action} className="space-y-4" noValidate>
-      <Input label="New password" name="password" type="password" autoComplete="new-password" required minLength={8} errors={fe?.password} hint="At least 8 characters" />
+      <Input
+        label="New password"
+        name="password"
+        type="password"
+        autoComplete="new-password"
+        required
+        minLength={8}
+        errors={fe?.password}
+        hint="At least 8 characters"
+      />
       <Input label="Confirm new password" name="confirm" type="password" autoComplete="new-password" required errors={fe?.confirm} />
       <FormMessage state={state} />
-      <SubmitButton className="w-full" size="lg" pendingText="Saving…">Save new password</SubmitButton>
+      <SubmitButton className="w-full" size="lg" pendingText="Saving…">
+        Save new password
+      </SubmitButton>
     </form>
   );
 }

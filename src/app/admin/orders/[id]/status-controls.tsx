@@ -49,12 +49,19 @@ export function StatusControls({ orderId, status }: { orderId: string; status: O
                 onClick={() => (s === "delivered" ? setConfirm(s) : run(s))}
                 className={cn(
                   "flex h-full w-full flex-col items-start gap-1.5 rounded-xl border p-2.5 text-left text-xs font-semibold transition-colors",
-                  done ? "border-primary/20 bg-primary-soft text-forest" : "border-line text-muted-strong hover:border-primary hover:text-forest",
+                  done
+                    ? "border-primary/20 bg-primary-soft text-forest"
+                    : "border-line text-muted-strong hover:border-primary hover:text-forest",
                   i === idx && "ring-2 ring-primary/30",
                 )}
                 aria-current={i === idx ? "step" : undefined}
               >
-                <span className={cn("grid size-5 place-items-center rounded-full text-[0.625rem]", done ? "bg-primary text-white" : "bg-canvas ring-1 ring-line-strong")}>
+                <span
+                  className={cn(
+                    "grid size-5 place-items-center rounded-full text-[0.625rem]",
+                    done ? "bg-primary text-white" : "bg-canvas ring-1 ring-line-strong",
+                  )}
+                >
                   {done ? <Check className="size-3" strokeWidth={3} /> : i + 1}
                 </span>
                 {STATUS_LABEL[s]}
@@ -69,7 +76,13 @@ export function StatusControls({ orderId, status }: { orderId: string; status: O
             Mark as {STATUS_LABEL[next].toLowerCase()} <ArrowRight className="size-4" aria-hidden="true" />
           </Button>
         )}
-        <Button size="lg" variant="outline" className="text-danger hover:border-danger hover:text-danger" disabled={pending} onClick={() => setConfirm("cancelled")}>
+        <Button
+          size="lg"
+          variant="outline"
+          className="text-danger hover:border-danger hover:text-danger"
+          disabled={pending}
+          onClick={() => setConfirm("cancelled")}
+        >
           Cancel order
         </Button>
       </div>
@@ -93,7 +106,13 @@ export function StatusControls({ orderId, status }: { orderId: string; status: O
         onCancel={() => setConfirm(null)}
         onConfirm={() => (note.trim() ? run("cancelled", note.trim()) : toast("Please add a reason for the customer.", "error"))}
       >
-        <Textarea label="Reason (shown to the customer)" value={note} onChange={(e) => setNote(e.target.value)} maxLength={300} placeholder="e.g. Customer requested cancellation by phone" />
+        <Textarea
+          label="Reason (shown to the customer)"
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+          maxLength={300}
+          placeholder="e.g. Customer requested cancellation by phone"
+        />
       </ConfirmDialog>
     </div>
   );

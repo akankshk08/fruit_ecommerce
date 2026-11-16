@@ -16,7 +16,17 @@ interface ConfirmDialogProps {
 }
 
 /** Accessible modal built on the native <dialog> element (focus trap + Esc for free). */
-export function ConfirmDialog({ open, title, description, confirmLabel = "Confirm", tone = "primary", loading, children, onConfirm, onCancel }: ConfirmDialogProps) {
+export function ConfirmDialog({
+  open,
+  title,
+  description,
+  confirmLabel = "Confirm",
+  tone = "primary",
+  loading,
+  children,
+  onConfirm,
+  onCancel,
+}: ConfirmDialogProps) {
   const ref = useRef<HTMLDialogElement>(null);
   useEffect(() => {
     const d = ref.current;
@@ -35,7 +45,9 @@ export function ConfirmDialog({ open, title, description, confirmLabel = "Confir
       aria-labelledby="confirm-title"
     >
       <div className="p-6">
-        <h2 id="confirm-title" className="text-lg font-bold">{title}</h2>
+        <h2 id="confirm-title" className="text-lg font-bold">
+          {title}
+        </h2>
         {description && <div className="mt-2 text-sm text-muted-strong">{description}</div>}
         {children && <div className="mt-4">{children}</div>}
         <div className="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">

@@ -28,9 +28,20 @@ export function PackingSlip({ order, business }: { order: OrderDetail; business:
           <p className="slip-title">Packing slip</p>
           <table>
             <tbody>
-              <tr><th>Order ID</th><td><b>{order.orderNumber}</b></td></tr>
-              <tr><th>Order date</th><td>{formatDateTime(order.placedAt)}</td></tr>
-              <tr><th>Status</th><td>{STATUS_LABEL[order.status]}</td></tr>
+              <tr>
+                <th>Order ID</th>
+                <td>
+                  <b>{order.orderNumber}</b>
+                </td>
+              </tr>
+              <tr>
+                <th>Order date</th>
+                <td>{formatDateTime(order.placedAt)}</td>
+              </tr>
+              <tr>
+                <th>Status</th>
+                <td>{STATUS_LABEL[order.status]}</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -48,14 +59,18 @@ export function PackingSlip({ order, business }: { order: OrderDetail; business:
               <p>{a.line1}</p>
               {a.line2 && <p>{a.line2}</p>}
               {a.landmark && <p>Landmark: {a.landmark}</p>}
-              <p>{a.city}, {a.state} – <b>{a.pincode}</b></p>
+              <p>
+                {a.city}, {a.state} – <b>{a.pincode}</b>
+              </p>
             </>
           )}
         </div>
         <div className="slip-box">
           <h2>Payment</h2>
           <p className="slip-strong">{PAYMENT_METHOD_LABEL[order.paymentMethod]}</p>
-          <p>Status: <b>{PAYMENT_STATUS_LABEL[order.paymentStatus]}</b></p>
+          <p>
+            Status: <b>{PAYMENT_STATUS_LABEL[order.paymentStatus]}</b>
+          </p>
           {order.paymentStatus !== "paid" && <p className="slip-collect">Collect {formatINR(order.totalPaise)}</p>}
         </div>
       </section>
@@ -70,7 +85,9 @@ export function PackingSlip({ order, business }: { order: OrderDetail; business:
       <table className="slip-items">
         <thead>
           <tr>
-            <th className="c-check" aria-label="Packed">✓</th>
+            <th className="c-check" aria-label="Packed">
+              ✓
+            </th>
             <th>Product</th>
             <th className="num">Qty</th>
             <th className="num">Unit price</th>
@@ -80,12 +97,18 @@ export function PackingSlip({ order, business }: { order: OrderDetail; business:
         <tbody>
           {order.items.map((i) => (
             <tr key={i.id}>
-              <td className="c-check"><span className="slip-tick" /></td>
+              <td className="c-check">
+                <span className="slip-tick" />
+              </td>
               <td>
                 <b>{i.productName}</b>
-                <span className="slip-sub">{i.variantLabel} · {formatQty(i.quantity * i.quantityInBase)} {UNIT_LABEL[i.unit]} in total</span>
+                <span className="slip-sub">
+                  {i.variantLabel} · {formatQty(i.quantity * i.quantityInBase)} {UNIT_LABEL[i.unit]} in total
+                </span>
               </td>
-              <td className="num"><b>{i.quantity}</b> × {i.variantLabel}</td>
+              <td className="num">
+                <b>{i.quantity}</b> × {i.variantLabel}
+              </td>
               <td className="num">{formatINR(i.unitPricePaise)}</td>
               <td className="num">{formatINR(i.lineTotalPaise)}</td>
             </tr>
@@ -95,10 +118,22 @@ export function PackingSlip({ order, business }: { order: OrderDetail; business:
 
       <table className="slip-totals">
         <tbody>
-          <tr><th>Subtotal</th><td>{formatINR(order.subtotalPaise)}</td></tr>
-          <tr><th>Delivery charges</th><td>{order.deliveryFeePaise ? formatINR(order.deliveryFeePaise) : "Free"}</td></tr>
-          <tr><th>Discounts</th><td>{order.discountPaise ? `−${formatINR(order.discountPaise)}` : formatINR(0)}</td></tr>
-          <tr className="grand"><th>Grand total</th><td>{formatINR(order.totalPaise)}</td></tr>
+          <tr>
+            <th>Subtotal</th>
+            <td>{formatINR(order.subtotalPaise)}</td>
+          </tr>
+          <tr>
+            <th>Delivery charges</th>
+            <td>{order.deliveryFeePaise ? formatINR(order.deliveryFeePaise) : "Free"}</td>
+          </tr>
+          <tr>
+            <th>Discounts</th>
+            <td>{order.discountPaise ? `−${formatINR(order.discountPaise)}` : formatINR(0)}</td>
+          </tr>
+          <tr className="grand">
+            <th>Grand total</th>
+            <td>{formatINR(order.totalPaise)}</td>
+          </tr>
         </tbody>
       </table>
 

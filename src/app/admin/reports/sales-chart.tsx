@@ -22,12 +22,16 @@ export function SalesChart({ series }: { series: DailySales[] }) {
       <div className="relative flex h-64 gap-2">
         {/* y axis */}
         <div className="flex w-14 shrink-0 flex-col-reverse justify-between pb-6 text-right text-[0.6875rem] text-muted-strong tabular-nums">
-          {ticks.map((t) => <span key={t}>{formatINR(t).replace(".00", "")}</span>)}
+          {ticks.map((t) => (
+            <span key={t}>{formatINR(t).replace(".00", "")}</span>
+          ))}
         </div>
         <div className="relative flex-1">
           {/* recessive grid */}
           <div className="absolute inset-x-0 top-0 bottom-6 flex flex-col justify-between" aria-hidden="true">
-            {ticks.map((t) => <div key={t} className="border-t border-line first:border-dashed" />)}
+            {ticks.map((t) => (
+              <div key={t} className="border-t border-line first:border-dashed" />
+            ))}
           </div>
           <div className="absolute inset-x-0 top-0 bottom-6 flex items-end gap-[2px]" role="list" aria-label="Revenue per day">
             {series.map((d, i) => (
@@ -44,13 +48,20 @@ export function SalesChart({ series }: { series: DailySales[] }) {
               >
                 <div
                   className="w-full rounded-t-[4px] transition-opacity"
-                  style={{ height: `${(d.revenuePaise / top) * 100}%`, minHeight: d.revenuePaise > 0 ? 2 : 0, background: BAR, opacity: hover === null || hover === i ? 1 : 0.45 }}
+                  style={{
+                    height: `${(d.revenuePaise / top) * 100}%`,
+                    minHeight: d.revenuePaise > 0 ? 2 : 0,
+                    background: BAR,
+                    opacity: hover === null || hover === i ? 1 : 0.45,
+                  }}
                 />
                 {hover === i && (
                   <div className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 rounded-lg border border-line bg-surface px-3 py-2 text-xs whitespace-nowrap shadow-[var(--shadow-lift)]">
                     <p className="font-semibold text-muted-strong">{dayLabel(d.day)}</p>
                     <p className="text-sm font-bold text-ink tabular-nums">{formatINR(d.revenuePaise)}</p>
-                    <p className="text-muted-strong">{d.orders} {d.orders === 1 ? "order" : "orders"}</p>
+                    <p className="text-muted-strong">
+                      {d.orders} {d.orders === 1 ? "order" : "orders"}
+                    </p>
                   </div>
                 )}
               </div>
@@ -59,7 +70,9 @@ export function SalesChart({ series }: { series: DailySales[] }) {
           {/* x axis */}
           <div className="absolute inset-x-0 bottom-0 flex h-5 gap-[2px] text-[0.6875rem] text-muted-strong" aria-hidden="true">
             {series.map((d, i) => (
-              <span key={d.day} className="flex-1 text-center whitespace-nowrap">{i % labelEvery === 0 ? dayLabel(d.day) : ""}</span>
+              <span key={d.day} className="flex-1 text-center whitespace-nowrap">
+                {i % labelEvery === 0 ? dayLabel(d.day) : ""}
+              </span>
             ))}
           </div>
         </div>

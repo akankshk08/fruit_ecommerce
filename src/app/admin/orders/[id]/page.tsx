@@ -37,9 +37,18 @@ export default async function AdminOrderPage({ params }: PageProps<"/admin/order
             <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Order {order.orderNumber}</h1>
             <StatusBadge status={order.status} />
           </div>
-          <p className="mt-1 text-sm text-muted-strong">Placed {formatDateTime(order.placedAt)} · {order.itemCount} {order.itemCount === 1 ? "item" : "items"} · {formatINR(order.totalPaise)}</p>
+          <p className="mt-1 text-sm text-muted-strong">
+            Placed {formatDateTime(order.placedAt)} · {order.itemCount} {order.itemCount === 1 ? "item" : "items"} ·{" "}
+            {formatINR(order.totalPaise)}
+          </p>
         </div>
-        <LinkButton href={`/print/orders/${order.id}`} target="_blank" rel="noopener" variant="outline" icon={<Printer className="size-4" />}>
+        <LinkButton
+          href={`/print/orders/${order.id}`}
+          target="_blank"
+          rel="noopener"
+          variant="outline"
+          icon={<Printer className="size-4" />}
+        >
           Print packing slip
         </LinkButton>
       </div>
@@ -48,7 +57,9 @@ export default async function AdminOrderPage({ params }: PageProps<"/admin/order
         <div className="space-y-6">
           <Card>
             <CardHeader title="Update status" description="Customers see every change on their order page." />
-            <div className="p-5 sm:p-6"><StatusControls orderId={order.id} status={order.status} /></div>
+            <div className="p-5 sm:p-6">
+              <StatusControls orderId={order.id} status={order.status} />
+            </div>
           </Card>
 
           <Card className="overflow-hidden">
@@ -57,10 +68,18 @@ export default async function AdminOrderPage({ params }: PageProps<"/admin/order
               <table className="w-full text-left text-sm">
                 <thead className="border-b border-line text-xs font-semibold tracking-wide text-muted-strong uppercase">
                   <tr>
-                    <th scope="col" className="px-5 py-3">Product</th>
-                    <th scope="col" className="px-3 py-3 text-right">Qty</th>
-                    <th scope="col" className="px-3 py-3 text-right">Unit price</th>
-                    <th scope="col" className="px-5 py-3 text-right">Total</th>
+                    <th scope="col" className="px-5 py-3">
+                      Product
+                    </th>
+                    <th scope="col" className="px-3 py-3 text-right">
+                      Qty
+                    </th>
+                    <th scope="col" className="px-3 py-3 text-right">
+                      Unit price
+                    </th>
+                    <th scope="col" className="px-5 py-3 text-right">
+                      Total
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-line">
@@ -68,7 +87,9 @@ export default async function AdminOrderPage({ params }: PageProps<"/admin/order
                     <tr key={i.id}>
                       <td className="px-5 py-3.5">
                         <p className="font-semibold">{i.productName}</p>
-                        <p className="text-xs text-muted-strong">{i.variantLabel} · {formatQty(i.quantity * i.quantityInBase)} {UNIT_LABEL[i.unit]} total</p>
+                        <p className="text-xs text-muted-strong">
+                          {i.variantLabel} · {formatQty(i.quantity * i.quantityInBase)} {UNIT_LABEL[i.unit]} total
+                        </p>
                       </td>
                       <td className="px-3 py-3.5 text-right font-bold tabular-nums">× {i.quantity}</td>
                       <td className="px-3 py-3.5 text-right tabular-nums">{formatINR(i.unitPricePaise)}</td>
@@ -79,7 +100,12 @@ export default async function AdminOrderPage({ params }: PageProps<"/admin/order
               </table>
             </div>
             <div className="border-t border-line px-5 py-4 sm:ml-auto sm:max-w-xs">
-              <OrderTotals subtotal={order.subtotalPaise} delivery={order.deliveryFeePaise} discount={order.discountPaise} total={order.totalPaise} />
+              <OrderTotals
+                subtotal={order.subtotalPaise}
+                delivery={order.deliveryFeePaise}
+                discount={order.discountPaise}
+                total={order.totalPaise}
+              />
             </div>
           </Card>
 
@@ -90,7 +116,10 @@ export default async function AdminOrderPage({ params }: PageProps<"/admin/order
                 <li key={h.id} className="flex flex-wrap items-baseline justify-between gap-2 px-5 py-3 text-sm">
                   <span>
                     <span className="font-semibold">{STATUS_LABEL[h.toStatus]}</span>
-                    <span className="text-muted-strong"> · by {h.changedByRole === "customer" ? "customer" : (h.changedByName || h.changedByRole || "system")}</span>
+                    <span className="text-muted-strong">
+                      {" "}
+                      · by {h.changedByRole === "customer" ? "customer" : h.changedByName || h.changedByRole || "system"}
+                    </span>
                     {h.note && <span className="block text-muted-strong">“{h.note}”</span>}
                   </span>
                   <span className="text-xs text-muted-strong">{formatDateTime(h.createdAt)}</span>
@@ -104,7 +133,10 @@ export default async function AdminOrderPage({ params }: PageProps<"/admin/order
           <Card className="p-5">
             <h2 className="text-xs font-bold tracking-wider text-muted-strong uppercase">Customer</h2>
             <p className="mt-2 text-base font-bold">{order.customerName}</p>
-            <a href={`tel:+91${order.customerPhone}`} className="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-forest">
+            <a
+              href={`tel:+91${order.customerPhone}`}
+              className="mt-1 inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-forest"
+            >
               <Phone className="size-4" aria-hidden="true" /> +91 {order.customerPhone}
             </a>
             {order.customerEmail && <p className="mt-1 text-sm break-all text-muted-strong">{order.customerEmail}</p>}
@@ -117,11 +149,27 @@ export default async function AdminOrderPage({ params }: PageProps<"/admin/order
               <>
                 <p className="mt-2 text-sm leading-relaxed">
                   {a.line1}
-                  {a.line2 && <><br />{a.line2}</>}
-                  {a.landmark && <><br />Landmark: {a.landmark}</>}
-                  <br />{a.city}, {a.state} – <b>{a.pincode}</b>
+                  {a.line2 && (
+                    <>
+                      <br />
+                      {a.line2}
+                    </>
+                  )}
+                  {a.landmark && (
+                    <>
+                      <br />
+                      Landmark: {a.landmark}
+                    </>
+                  )}
+                  <br />
+                  {a.city}, {a.state} – <b>{a.pincode}</b>
                 </p>
-                <a href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery}`} target="_blank" rel="noopener noreferrer" className="mt-2 inline-block text-sm font-semibold text-primary hover:text-forest">
+                <a
+                  href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-2 inline-block text-sm font-semibold text-primary hover:text-forest"
+                >
                   Open in Maps
                 </a>
               </>
@@ -141,7 +189,9 @@ export default async function AdminOrderPage({ params }: PageProps<"/admin/order
               <p className="font-semibold">{PAYMENT_METHOD_LABEL[order.paymentMethod]}</p>
               <PaymentBadge status={order.paymentStatus} />
             </div>
-            <p className="mt-1 text-sm text-muted-strong">Amount to collect: <b className="text-ink">{formatINR(order.totalPaise)}</b></p>
+            <p className="mt-1 text-sm text-muted-strong">
+              Amount to collect: <b className="text-ink">{formatINR(order.totalPaise)}</b>
+            </p>
             {order.paymentReference && <p className="mt-1 text-sm text-muted-strong">Ref: {order.paymentReference}</p>}
             {order.paidAt && <p className="text-xs text-muted-strong">Paid {formatDateTime(order.paidAt)}</p>}
             <PaymentControls orderId={order.id} status={order.paymentStatus} />

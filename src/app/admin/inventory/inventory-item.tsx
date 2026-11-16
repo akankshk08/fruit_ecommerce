@@ -56,7 +56,7 @@ export function InventoryItem({ row, canEditPrices }: { row: InventoryRow; canEd
     <li className={cn("px-4 py-4 sm:px-5", !row.isActive && "opacity-60")}>
       <div className="flex flex-wrap items-center gap-3 sm:flex-nowrap">
         <div className="relative size-12 shrink-0 overflow-hidden rounded-xl bg-beige">
-          <ProductImage src={row.imageUrl} alt={row.name} sizes="48px" />
+          <ProductImage src={row.imageUrl} alt={row.name} sizes="48px" showLabel={false} />
         </div>
         <div className="min-w-0 flex-1">
           <p className="truncate font-bold">{row.name}</p>
@@ -73,7 +73,9 @@ export function InventoryItem({ row, canEditPrices }: { row: InventoryRow; canEd
             saveStock();
           }}
         >
-          <label className="sr-only" htmlFor={`stock-${row.productId}`}>Stock for {row.name} in {unit}</label>
+          <label className="sr-only" htmlFor={`stock-${row.productId}`}>
+            Stock for {row.name} in {unit}
+          </label>
           <div className="relative flex-1 sm:w-32 sm:flex-none">
             <input
               id={`stock-${row.productId}`}
@@ -87,15 +89,27 @@ export function InventoryItem({ row, canEditPrices }: { row: InventoryRow; canEd
             />
             <span className="pointer-events-none absolute top-1/2 right-3.5 -translate-y-1/2 text-sm text-muted-strong">{unit}</span>
           </div>
-          <Button type="submit" size="sm" className="h-11" disabled={!dirty} loading={pending && dirty}>Save</Button>
+          <Button type="submit" size="sm" className="h-11" disabled={!dirty} loading={pending && dirty}>
+            Save
+          </Button>
         </form>
         <div className="flex w-full items-center justify-between gap-2 sm:w-auto">
           {row.isAvailable ? (
-            <Button variant="outline" size="sm" onClick={() => setConfirmOff(true)} disabled={pending}>Mark unavailable</Button>
+            <Button variant="outline" size="sm" onClick={() => setConfirmOff(true)} disabled={pending}>
+              Mark unavailable
+            </Button>
           ) : (
-            <Button variant="beige" size="sm" onClick={() => save({ productId: row.productId, isAvailable: true })} loading={pending}>Make available</Button>
+            <Button variant="beige" size="sm" onClick={() => save({ productId: row.productId, isAvailable: true })} loading={pending}>
+              Make available
+            </Button>
           )}
-          <button type="button" onClick={() => setExpanded((x) => !x)} className="rounded-full p-2 text-muted-strong hover:bg-primary-soft" aria-expanded={expanded} aria-label={`More options for ${row.name}`}>
+          <button
+            type="button"
+            onClick={() => setExpanded((x) => !x)}
+            className="rounded-full p-2 text-muted-strong hover:bg-primary-soft"
+            aria-expanded={expanded}
+            aria-label={`More options for ${row.name}`}
+          >
             <ChevronDown className={cn("size-5 transition-transform", expanded && "rotate-180")} />
           </button>
         </div>
@@ -104,9 +118,20 @@ export function InventoryItem({ row, canEditPrices }: { row: InventoryRow; canEd
       {expanded && (
         <div className="mt-4 grid animate-fade-in gap-4 rounded-xl bg-canvas p-4 sm:grid-cols-[14rem_1fr]">
           <div>
-            <label htmlFor={`thr-${row.productId}`} className="text-sm font-semibold">Low-stock warning at</label>
+            <label htmlFor={`thr-${row.productId}`} className="text-sm font-semibold">
+              Low-stock warning at
+            </label>
             <div className="relative mt-1.5">
-              <input id={`thr-${row.productId}`} type="number" inputMode="decimal" min={0} step="any" value={threshold} onChange={(e) => setThreshold(e.target.value)} className={cn(controlClass, "h-10 pr-12 tabular-nums")} />
+              <input
+                id={`thr-${row.productId}`}
+                type="number"
+                inputMode="decimal"
+                min={0}
+                step="any"
+                value={threshold}
+                onChange={(e) => setThreshold(e.target.value)}
+                className={cn(controlClass, "h-10 pr-12 tabular-nums")}
+              />
               <span className="pointer-events-none absolute top-1/2 right-3.5 -translate-y-1/2 text-sm text-muted-strong">{unit}</span>
             </div>
             <p className="mt-1 text-xs text-muted-strong">Press Save above after changing.</p>
@@ -114,7 +139,9 @@ export function InventoryItem({ row, canEditPrices }: { row: InventoryRow; canEd
           <div>
             <p className="text-sm font-semibold">Sizes & prices</p>
             <ul className="mt-1.5 space-y-2">
-              {row.variants.map((v) => <PriceRow key={v.id} variant={v} editable={canEditPrices} />)}
+              {row.variants.map((v) => (
+                <PriceRow key={v.id} variant={v} editable={canEditPrices} />
+              ))}
             </ul>
             {!canEditPrices && <p className="mt-2 text-xs text-muted-strong">Prices are managed by the admin team.</p>}
           </div>
@@ -154,17 +181,35 @@ function PriceRow({ variant, editable }: { variant: InventoryRow["variants"][num
             const p = rupeesToPaise(Number(price));
             if (!Number.isFinite(p) || p <= 0) return toast("Enter a price above ₹0.", "error");
             start(async () => {
-              const r = await setVariantPriceAction({ variantId: variant.id, pricePaise: p, mrpPaise: variant.mrpPaise && variant.mrpPaise >= p ? variant.mrpPaise : null });
+              const r = await setVariantPriceAction({
+                variantId: variant.id,
+                pricePaise: p,
+                mrpPaise: variant.mrpPaise && variant.mrpPaise >= p ? variant.mrpPaise : null,
+              });
               toast(r.ok ? (r.message ?? "Saved") : r.error, r.ok ? "success" : "error");
               if (r.ok) router.refresh();
             });
           }}
         >
           <div className="relative w-28">
-            <IndianRupee className="pointer-events-none absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2 text-muted" aria-hidden="true" />
-            <input type="number" inputMode="decimal" min={0.01} step="0.01" value={price} onChange={(e) => setPrice(e.target.value)} aria-label={`Price for ${variant.label}`} className={cn(controlClass, "h-9 pl-7 tabular-nums")} />
+            <IndianRupee
+              className="pointer-events-none absolute top-1/2 left-2.5 size-3.5 -translate-y-1/2 text-muted"
+              aria-hidden="true"
+            />
+            <input
+              type="number"
+              inputMode="decimal"
+              min={0.01}
+              step="0.01"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              aria-label={`Price for ${variant.label}`}
+              className={cn(controlClass, "h-9 pl-7 tabular-nums")}
+            />
           </div>
-          <Button type="submit" size="sm" variant="outline" disabled={!changed} loading={pending}>Update</Button>
+          <Button type="submit" size="sm" variant="outline" disabled={!changed} loading={pending}>
+            Update
+          </Button>
         </form>
       ) : (
         <span className="font-semibold tabular-nums">{formatINR(variant.pricePaise)}</span>

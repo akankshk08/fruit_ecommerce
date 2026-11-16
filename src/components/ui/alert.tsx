@@ -11,7 +11,10 @@ const styles = {
 export function Alert({ tone = "info", children, className }: { tone?: keyof typeof styles; children: ReactNode; className?: string }) {
   const { box, Icon } = styles[tone];
   return (
-    <div role={tone === "error" ? "alert" : "status"} className={cn("flex items-start gap-2.5 rounded-[var(--radius-control)] border px-4 py-3 text-sm font-medium", box, className)}>
+    <div
+      role={tone === "error" ? "alert" : "status"}
+      className={cn("flex items-start gap-2.5 rounded-[var(--radius-control)] border px-4 py-3 text-sm font-medium", box, className)}
+    >
       <Icon className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
       <div>{children}</div>
     </div>

@@ -28,7 +28,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en-IN" className={`${manrope.variable} h-full`}>
       <body className="flex min-h-full flex-col">
-        <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[200] focus:rounded-full focus:bg-forest focus:px-4 focus:py-2 focus:text-white">
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[200] focus:rounded-full focus:bg-forest focus:px-4 focus:py-2 focus:text-white"
+        >
           Skip to content
         </a>
         <ToastProvider>{children}</ToastProvider>
